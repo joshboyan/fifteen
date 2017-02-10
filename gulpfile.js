@@ -122,11 +122,9 @@ gulp.task('watch', function(done) {
   gulp.watch(jsSources, ['js']).on('change', browserSync.reload);
   gulp.watch(sassSources, ['sass']).on('change', browserSync.reload);
   gulp.watch(htmlSources, ['panini']).on('change', browserSync.reload);
-  runSequence('panini', function() {
-    gulp.watch(['./components/{layouts,partials,helpers,data}/**/*'], [panini.refresh]);
-  });	
+  gulp.watch(['./components/{layouts,partials,helpers,data}/**/*'], [panini.refresh]);
 });
 
 gulp.task('default', ['js', 'sass', 'panini', 'browser-sync',  'imgmin', 'watch']);
 
-gulp.task('dist', ['sassDist','jsDist', 'paniniDist', 'imgminDist', 'sitemap']);
+gulp.task('dist', ['sassDist', 'jsDist', 'paniniDist', 'imgminDist', 'sitemap']);
