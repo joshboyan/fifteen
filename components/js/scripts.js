@@ -90,11 +90,11 @@ function buildGameBoard() {
     let div;
     // Builds each game piece when called
     function gamePieces(id, text) {
-            let pieceValue = document.createTextNode(text);
-            div.appendChild(pieceValue);
-            div.id = id;
-            container.appendChild(div);
-        }
+        let pieceValue = document.createTextNode(text);
+        div.appendChild(pieceValue);
+        div.id = id;
+        container.appendChild(div);
+    }
     // Removes any gamepieces currently on the board
     while (container.hasChildNodes()) {
         container.removeChild(container.lastChild);
@@ -111,6 +111,7 @@ function buildGameBoard() {
             gamePieces(field, String.fromCharCode(160));
         }
     });
+    gameTimer();
 }
 
 function checkEmpty(targetId) {
@@ -151,6 +152,22 @@ function appendEvent() {
 
         });
     }
+}
+
+function gameTimer() {
+    function changeValue() {
+      // Add the timer function to the screen
+        document.getElementById("timer").innerHTML = `Game Time &ndash; ${minutes} : ${++seconds}`;
+        // Increment the minutes and set seconds to 0 after 59
+        if (seconds > 59) {
+            minutes++;
+            seconds = 0;
+        }
+    }
+    //Set the timer interval of changeValue() to 1000ms === 1s
+    let timerInterval = setInterval(changeValue, 100);
+    let seconds = 0;
+    let minutes = 0;
 }
 
 randomBoard();
