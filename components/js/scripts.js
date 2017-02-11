@@ -17,7 +17,8 @@ var compareArr = [
     [12],
     [13],
     [14],
-    [15], null
+    [15], 
+    null
 ];
 
 function randomBoard() {
@@ -37,35 +38,53 @@ function randomBoard() {
     //Run check to see if the game cannot be won
     if (!boardCheck()) {
         //Call the function recursively if the game cannot be won
-        //randomBoard();
+        randomBoard();
     }
 }
 
 function winCheck() {
     //Check that each element in the gameField array matches
     //the compareArr winning condition
-    for (let i in compareArr) {
-        if (compareArr[i] === gameField[i]) {
+    for (let element in compareArr) {
+        if (compareArr[element] === gameField[element]) {
             console.log(gameField[i]);
         }
         //console.log(gameField[i])
         //console.log(compareArr[i])
     }
 }
-
+// Find the number of permtations for the given board. We compare each piece 
+// sequencialy to all the other pieces that comes after it from left to right
+// add increment our accummulator when the value of the first piece is greater than
+// the second one. Odd number of permutations is unsolvable.
 function boardCheck() {
-    let permutations = gameField.reduce(function(reducePrev, reduceCurr, reduceIndex) {
+    // Grab the value of each game piece in the array
+    let permutations = gameField.reduce(function(reducePrev, reduceCurr, reduceIndex, starting) {
+        //Compare that piece to every other piece on the board
         starting.map(function(mapCurr, mapIndex) {
+            //If the index of the game piece we grabbed with map is less than the index
+            //of the game piece we gradd with reduce; set the map game piece value to 15.
+            //This ensures it is not counted in total permutations regardless of value.
             if (mapIndex < reduceIndex) mapCurr = 15;
             //console.log(reducePrev, parseInt(reduceCurr), parseInt(mapCurr));
+            //increment the permutations if the value of our reduce game piece is 
+            //greater than the value of our map game piece
             if (parseInt(reduceCurr) > parseInt(mapCurr)) reducePrev++;
         });
+        //return total permutations to variable
         return reducePrev;
     }, 0);
-    permutations % 2 === 0 ? true : false;
+    //If the number of permutations is even return true to randomBoard() continue with the game.
+    //If the number is odd a new board is generated.
+    if(permutations % 2 === 0) {
+      return true;
+    } else {
+      return false;
+    } 
 }
 
 function buildGameBoard() {
+    let container = document.getElementById('container');
     $("#container").empty();
     gameField.forEach((field, index) => {
         if (field) {
