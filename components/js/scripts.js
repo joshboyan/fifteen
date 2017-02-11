@@ -1,6 +1,8 @@
 /*You can have as many different javascript files as you like. 
 They will all be compiled to ES5, concantenated and linted for the dev build and
 minified with comments removed for the dist build.*/
+'use strict';
+'esversion: 6';
 var gameField = [];
 var compareArr = [
     [1],
@@ -17,7 +19,7 @@ var compareArr = [
     [12],
     [13],
     [14],
-    [15], 
+    [15],
     null
 ];
 
@@ -47,7 +49,7 @@ function winCheck() {
     //the compareArr winning condition
     for (let element in compareArr) {
         if (compareArr[element] === gameField[element]) {
-            console.log(gameField[i]);
+            console.log(gameField[element]);
         }
         //console.log(gameField[i])
         //console.log(compareArr[i])
@@ -59,9 +61,9 @@ function winCheck() {
 // the second one. Odd number of permutations is unsolvable.
 function boardCheck() {
     // Grab the value of each game piece in the array
-    let permutations = gameField.reduce(function(reducePrev, reduceCurr, reduceIndex, starting) {
+    let permutations = gameField.reduce((reducePrev, reduceCurr, reduceIndex, starting) => {
         //Compare that piece to every other piece on the board
-        starting.map(function(mapCurr, mapIndex) {
+        starting.map((mapCurr, mapIndex) => {
             //If the index of the game piece we grabbed with map is less than the index
             //of the game piece we gradd with reduce; set the map game piece value to 15.
             //This ensures it is not counted in total permutations regardless of value.
@@ -76,23 +78,34 @@ function boardCheck() {
     }, 0);
     //If the number of permutations is even return true to randomBoard() continue with the game.
     //If the number is odd a new board is generated.
-    if(permutations % 2 === 0) {
-      return true;
+    if (permutations % 2 === 0) {
+        return true;
     } else {
-      return false;
-    } 
+        return false;
+    }
 }
 
 function buildGameBoard() {
     let container = document.getElementById('container');
-    $("#container").empty();
-    gameField.forEach((field, index) => {
-        if (field) {
-            $("#container").append(`<div class="box" id="${index}">${field}</div>`)
-        } else {
-            $("#container").append(`<div class="box" id="${field}">&nbsp;</div>`)
+    let div;
+    function gamePieces(id, text) {
+            let pieceValue = document.createTextNode(text);
+            div.appendChild(pieceValue);
+            div.id = id;
+            container.appendChild(div);
         }
-    })
+    while (container.hasChildNodes()) {
+        container.removeChild(container.lastChild);
+    }
+    gameField.forEach((field, index) => {
+        div = document.createElement('div');
+        div.className = 'box';
+        if (field) {
+            gamePieces(index, field);
+        } else {
+            gamePieces(field, String.fromCharCode(160));
+        }
+    });
 }
 
 function checkEmpty(targetId) {
@@ -114,7 +127,7 @@ function appendEvent() {
     //Loop through all of the game pieces
     for (let i = 0; i < tiles.length; i++) {
         //Add click event to all game pieces
-        tiles[i].addEventListener('click', function(e) {
+        tiles[i].addEventListener('click', e => {
             //Set targetIdto the game piece the user clicked 
             var targetId = parseInt(e.target.id);
             //If the game piece the user clicked is a legal move
