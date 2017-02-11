@@ -88,20 +88,25 @@ function boardCheck() {
 function buildGameBoard() {
     let container = document.getElementById('container');
     let div;
+    // Builds each game piece when called
     function gamePieces(id, text) {
             let pieceValue = document.createTextNode(text);
             div.appendChild(pieceValue);
             div.id = id;
             container.appendChild(div);
         }
+    // Removes any gamepieces currently on the board
     while (container.hasChildNodes()) {
         container.removeChild(container.lastChild);
     }
     gameField.forEach((field, index) => {
         div = document.createElement('div');
         div.className = 'box';
+        // Create a game piece for the each element in the random arry af 1-15
         if (field) {
             gamePieces(index, field);
+            //Create the final blank game piece with a &nbsp; when the array 
+            //comes to null at the 16th element
         } else {
             gamePieces(field, String.fromCharCode(160));
         }
