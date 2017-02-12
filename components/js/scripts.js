@@ -22,6 +22,8 @@ var compareArr = [
     [15],
     null
 ];
+var counter = 0;
+document.getElementById('counter').innerHTML = `Moves: ${counter}`;
 
 function randomBoard() {
     //Ensure game board array is cleared
@@ -62,22 +64,22 @@ function winCheck() {
 function boardCheck() {
     // Grab the value of each game piece in the array
     let permutations = gameField.reduce((reducePrev, reduceCurr, reduceIndex, starting) => {
-        //Compare that piece to every other piece on the board
+        // Compare that piece to every other piece on the board
         starting.map((mapCurr, mapIndex) => {
-            //If the index of the game piece we grabbed with map is less than the index
-            //of the game piece we gradd with reduce; set the map game piece value to 15.
-            //This ensures it is not counted in total permutations regardless of value.
+            // If the index of the game piece we grabbed with map is less than the index
+            // of the game piece we gradd with reduce; set the map game piece value to 15.
+            // This ensures it is not counted in total permutations regardless of value.
             if (mapIndex < reduceIndex) mapCurr = 15;
-            //console.log(reducePrev, parseInt(reduceCurr), parseInt(mapCurr));
-            //increment the permutations if the value of our reduce game piece is 
-            //greater than the value of our map game piece
+            // console.log(reducePrev, parseInt(reduceCurr), parseInt(mapCurr));
+            // increment the permutations if the value of our reduce game piece is 
+            // greater than the value of our map game piece
             if (parseInt(reduceCurr) > parseInt(mapCurr)) reducePrev++;
         });
-        //return total permutations to variable
+        // return total permutations to variable
         return reducePrev;
     }, 0);
-    //If the number of permutations is even return true to randomBoard() continue with the game.
-    //If the number is odd a new board is generated.
+    // If the number of permutations is even return true to randomBoard() continue with the game.
+    // If the number is odd a new board is generated.
     if (permutations % 2 === 0) {
         return true;
     } else {
@@ -105,12 +107,13 @@ function buildGameBoard() {
         // Create a game piece for the each element in the random arry af 1-15
         if (field) {
             gamePieces(index, field);
-            //Create the final blank game piece with a &nbsp; when the array 
-            //comes to null at the 16th element
+            // Create the final blank game piece with a &nbsp; when the array 
+            // comes to null at the 16th element
         } else {
             gamePieces(field, String.fromCharCode(160));
         }
     });
+    // Start the game timer
     gameTimer();
 }
 
@@ -128,25 +131,25 @@ function checkEmpty(targetId) {
 }
 
 function appendEvent() {
-    //Get all of the game pieces
+    // Get all of the game pieces
     let tiles = document.getElementsByClassName('box');
-    //Loop through all of the game pieces
+    // Loop through all of the game pieces
     for (let i = 0; i < tiles.length; i++) {
-        //Add click event to all game pieces
+        // Add click event to all game pieces
         tiles[i].addEventListener('click', e => {
-            //Set targetIdto the game piece the user clicked 
+            // Set targetIdto the game piece the user clicked 
             var targetId = parseInt(e.target.id);
-            //If the game piece the user clicked is a legal move
+            // If the game piece the user clicked is a legal move
             if (checkEmpty(targetId)) {
-                //Set the blank piece to the targetId the user clicked
+                // Set the blank piece to the targetId the user clicked
                 gameField[gameField.indexOf(null)] = gameField[targetId];
-                //Remove the game piece value from targetId
+                // Remove the game piece value from targetId
                 gameField[targetId] = null;
-                //Render game board with new positions
+                // Render game board with new positions
                 buildGameBoard();
-                //Winning condition check if pieces are in numerical order
+                // Winning condition check if pieces are in numerical order
                 winCheck();
-                //Call function recursivley until winning condition is met
+                // Call function recursivley until winning condition is met
                 appendEvent();
             }
 
@@ -156,16 +159,22 @@ function appendEvent() {
 
 function gameTimer() {
     function changeValue() {
-      // Add the timer function to the screen
-        document.getElementById("timer").innerHTML = `Game Time &ndash; ${minutes} : ${++seconds}`;
+        // Add the timer function to the screen
+        let timer = document.getElementById("timer");
+        // Ensure seconds are always shown as double digits
+        if (seconds > 9) {
+            timer.innerHTML = `Game Time &ndash; ${minutes}:${seconds++}`;
+        } else {
+            timer.innerHTML = `Game Time &ndash; ${minutes}:0${seconds++}`;
+        }
         // Increment the minutes and set seconds to 0 after 59
         if (seconds > 59) {
             minutes++;
             seconds = 0;
         }
     }
-    //Set the timer interval of changeValue() to 1000ms === 1s
-    let timerInterval = setInterval(changeValue, 100);
+    // Set the timer interval of changeValue() to 1000ms === 1s
+    let timerInterval = setInterval(changeValue, 1000);
     let seconds = 0;
     let minutes = 0;
 }
