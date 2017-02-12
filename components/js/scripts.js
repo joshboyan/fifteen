@@ -22,8 +22,10 @@ var compareArr = [
     [15],
     null
 ];
-var counter = 0;
-document.getElementById('counter').innerHTML = `Moves: ${counter}`;
+var counter = 1;
+var start = new Date().getTime();
+var seconds = 0;
+var minutes = 0;
 
 function randomBoard() {
     //Ensure game board array is cleared
@@ -126,6 +128,9 @@ function checkEmpty(targetId) {
         blankSpace === targetId + 1 ||
         blankSpace === targetId - 4 ||
         blankSpace === targetId + 4) {
+        // Increment the counter and update the DOM
+        document.getElementById('counter').innerHTML = `Moves: ${counter++}`;
+
         return true;
     }
 }
@@ -158,10 +163,13 @@ function appendEvent() {
 }
 
 function gameTimer() {
-    function changeValue() {
-        // Add the timer function to the screen
-        let timer = document.getElementById("timer");
-        // Ensure seconds are always shown as double digits
+    let timer = document.getElementById("timer");
+    window.setInterval(function() {
+        //Find how much time has elasped between ow and starting time
+        let time = new Date().getTime() - start;
+        // Set the timer interval to 1000ms === 1s
+        seconds = Math.floor(time / 1000);
+        // Ensure seconds alwats appear in 2 digit format
         if (seconds > 9) {
             timer.innerHTML = `Game Time &ndash; ${minutes}:${seconds++}`;
         } else {
@@ -171,12 +179,11 @@ function gameTimer() {
         if (seconds > 59) {
             minutes++;
             seconds = 0;
+            // Restart timer
+            start = new Date().getTime();
         }
-    }
-    // Set the timer interval of changeValue() to 1000ms === 1s
-    let timerInterval = setInterval(changeValue, 1000);
-    let seconds = 0;
-    let minutes = 0;
+        // Set the timer interval to 1000ms === 1s
+    }, 100);
 }
 
 randomBoard();
