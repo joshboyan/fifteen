@@ -138,10 +138,12 @@ function checkEmpty(targetId) {
 function appendEvent() {
     // Get all of the game pieces
     let tiles = document.getElementsByClassName('box');
+    // Convert tiles from an array-like object ot an array
+    tiles = Array.prototype.slice.call(tiles, 0);
     // Loop through all of the game pieces
-    for (let i = 0; i < tiles.length; i++) {
+    tiles.map(tile => {
         // Add click event to all game pieces
-        tiles[i].addEventListener('click', e => {
+        tile.addEventListener('click', e => {
             // Set targetIdto the game piece the user clicked 
             var targetId = parseInt(e.target.id);
             // If the game piece the user clicked is a legal move
@@ -159,7 +161,7 @@ function appendEvent() {
             }
 
         });
-    }
+    })
 }
 
 function gameTimer() {
@@ -169,7 +171,7 @@ function gameTimer() {
         let time = new Date().getTime() - start;
         // Set the timer interval to 1000ms === 1s
         seconds = Math.floor(time / 1000);
-        // Ensure seconds alwats appear in 2 digit format
+        // Ensure seconds always appear in 2 digit format
         if (seconds > 9) {
             timer.innerHTML = `Game Time &ndash; ${minutes}:${seconds++}`;
         } else {
