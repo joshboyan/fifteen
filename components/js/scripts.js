@@ -26,7 +26,7 @@
         minified with comments removed for the dist build.*/
         var idb = require('idb');
         'use strict';
-        'esversion: 6';
+        'esversion: 7';
         var gameField = [];
         var compareArr = [
             [1],
@@ -48,7 +48,6 @@
         ];
         var counter = 1;
         var winCount = 0;
-        var start = new Date().getTime();
         var seconds = 0;
         var minutes = 0;
         var name;
@@ -99,9 +98,9 @@
                 console.log(record);
                 scoreCardEntry = timeScores.get(record);
                 console.log(scoreCardEntry.request.readyState);
-                scoreCardEntry.then(function() {
+                scoreCardEntry.then(function(scoreCardEntry) {
                     console.log(scoreCardEntry);
-                    console.log(`${scoreCardEntry.request.result.name} won in ${scoreCardEntry.request.result.moves} moves!`);
+                    console.log(`${scoreCardEntry.name} won in ${scoreCardEntry.moves} moves!`);
                 })
             }
             return entryCount;
@@ -133,7 +132,7 @@
         function winCheck() {
             // Get the initial count from the DB
             if (winCount == 0) {
-                entryCount = entryCount.request.result;
+                entryCount = entryCount.request.result + 1;
             }
             // Set the details of the game
             gameStats = {
@@ -151,12 +150,12 @@
                     randomBoard();
                     buildGameBoard();
                     counter = 0;
-                    seconds = 0;
+
                     // Add the info from this game to the DB
                     dbPromise.then(db => {
                         tx = db.transaction('timeScores', 'readwrite');
                         timeScores = tx.objectStore('timeScores', 'readwrite');
-                        timeScores.add(gameStats, `key${entryCount +1}`);
+                        timeScores.add(gameStats, `key${entryCount + 1}`);
                     })
 
                 }
@@ -271,9 +270,12 @@
         }
 
         function gameTimer() {
-            seconds = 0;
-            minutes = 0;
-            let timer = document.getElementById("timer");
+          let timer = document.getElementById("timer");
+          timer.innerHTML = '';
+          seconds = 0;
+          minutes = 0;
+          let start = new Date().getTime();    
+            
             window.setInterval(function() {
                 //Find how much time has elasped between ow and starting time
                 time = new Date().getTime() - start;
