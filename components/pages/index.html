@@ -7,12 +7,39 @@ description: ""
 
 ---
 	
+<header role="banner">
+	<span id="instructionsTrigger">Fifteen</span>
+	<img id="refresh" src="%img/refresh.png" alt="Refresh game">
 </header>
 <main role="main">
-	<p id="timer">Game Time &ndash;</p>
-	<p id="counter">Moves &ndash;</p>
+	<div class="game-stats">
+		<p id="timer">Game Time &ndash;0:00</p>
+		<p id="counter">Moves &ndash; 0</p>
+	</div>
 	<div class="wrapper">
   		<div id="container"></div>
 	</div>
 </main>
-<br>
+<footer role="navigation">
+	<img id="timeScores" src="%img/time.png" alt="View Best Time Leaderboard">
+	<img id="info" src="%img/info.png" alt="Info">
+	<img id="moveScores" src="%img/trophy.png" alt="Best Least Move Leaderboard">
+</footer>
+<aside id="instructions" class="instructions" role="complementary">
+	<p>Arrange game pieces into descending order.</p>
+	<figure>
+		<img src="%img/starting.png" alt="Starting Game Board">
+		<figcation>Starting Game Board</figcation>
+	</figure>
+	<figure>
+		<img src="%img/finished.png" alt="Finished Game Board">
+		<figcation>Finished Game Board</figcation>
+	</figure>
+</aside>
+<aside role="complementary">
+	<div id="timeScoreBoard"></div>
+</aside>
+<aside role="complementary">
+	<div id="movesScoreBoard"></div>
+</aside>
+

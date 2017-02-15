@@ -160,12 +160,13 @@
                     randomBoard();
                     buildGameBoard();
                     counter = 0;
+console.log(`key${entryCount + 1}`);
                     // Add the info from this game to the DB
                     dbPromise.then(db => {
                         tx = db.transaction('timeScores', 'readwrite');
                         timeScores = tx.objectStore('timeScores', 'readwrite');
                         timeScores.add(gameStats, `key${entryCount + 1}`);
-                    }).catch(err => console.log(`key${entryCount + 1} already exists ${err}`))
+                    }).catch(err => console.log(err))
                 }
             
             // Increment the counts
