@@ -86,6 +86,7 @@
             tx = db.transaction('timeScores', 'readwrite');
             timeScores = tx.objectStore('timeScores', 'readwrite');
             entryCount = timeScores.count();
+            //console.log(entryCount);
             return entryCount;
         }).then(entryCount => {
             // console.log(`There are ${entryCount} entries in this oject store`);
@@ -95,12 +96,12 @@
             while (i < entryCount) {
                 i++;
                 var record = `key${i}`;
-                console.log(record);
+                //console.log(record);
                 scoreCardEntry = timeScores.get(record);
-                console.log(scoreCardEntry.request.readyState);
+                //console.log(scoreCardEntry.request.readyState);
                 scoreCardEntry.then(function(scoreCardEntry) {
-                    console.log(scoreCardEntry);
-                    console.log(`${scoreCardEntry.name} won in ${scoreCardEntry.moves} moves!`);
+                    //console.log(scoreCardEntry);
+                    //console.log(`${scoreCardEntry.name} won in ${scoreCardEntry.moves} moves!`);
                 })
             }
             return entryCount;
@@ -110,9 +111,10 @@
 
         function randomBoard() {
             //Ensure game board array is cleared
-            gameField = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, null, 15];//Change this back to 1-15
+            //gameField = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, null, 15];//Change this back to 1-15
             //Game piece values for new game
-            /*let startArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+            gameField = [];
+            let startArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
             while (startArr.length > 0) {
                 //Set picked to a random number from 0 - 14
                 let picked = startArr[Math.ceil(Math.random() * startArr.length) - 1];
@@ -121,7 +123,7 @@
                 gameField.push(startArr.splice(startArr.indexOf(picked), 1));
             }
             //Set the final space to be blank with null spaceholder
-            gameField.push(null);*/
+            gameField.push(null);
             //Run check to see if the game cannot be won
             if (!boardCheck()) {
                 //Call the function recursively if the game cannot be won
@@ -134,32 +136,38 @@
             if (winCount == 0) {
                 entryCount = entryCount.request.result + 1;
             }
-            // Set the details of the game
-            gameStats = {
-                moves: counter,
-                timer: Math.floor(time / 1000),
-                name: name
-            }
-
+            //variable to store the number of elements that match between
+            //compareArr and gameField
+            let matchCounter = 0;
             // Check that each element in the gameField array matches
-            // the compareArr winning condition
-            for (let element in compareArr) {
-                if (compareArr[element] === gameField[element]) {
-                    // Reset the game
+            // the compareArr winning condition            
+            compareArr.forEach((element, index) =>  {
+                if (parseInt(element) === parseInt(gameField[index])) {                    
+                    matchCounter++;
+                }
+            });
+                if(matchCounter === 15) {
+                    //Display the screen that says you win and enter name form
+
+                    // Set the details of the game
+                    gameStats = {
+                            moves: counter,
+                            timer: Math.floor(time / 1000),
+                            name: name
+                        }
+                        // Reset the game
                     console.log('You Win!!');
                     randomBoard();
                     buildGameBoard();
                     counter = 0;
-
                     // Add the info from this game to the DB
                     dbPromise.then(db => {
                         tx = db.transaction('timeScores', 'readwrite');
                         timeScores = tx.objectStore('timeScores', 'readwrite');
                         timeScores.add(gameStats, `key${entryCount + 1}`);
-                    })
-
+                    }).catch(err => console.log(`key${entryCount + 1} already exists ${err}`))
                 }
-            }
+            
             // Increment the counts
             winCount++
             return entryCount++;
@@ -270,12 +278,12 @@
         }
 
         function gameTimer() {
-          let timer = document.getElementById("timer");
-          timer.innerHTML = '';
-          seconds = 0;
-          minutes = 0;
-          let start = new Date().getTime();    
-            
+            let timer = document.getElementById("timer");
+            timer.innerHTML = 'Game Time &ndash; 0:00';
+            seconds = 0;
+            minutes = 0;
+            let start = new Date().getTime();
+
             window.setInterval(function() {
                 //Find how much time has elasped between ow and starting time
                 time = new Date().getTime() - start;
@@ -283,9 +291,9 @@
                 seconds = Math.floor(time / 1000);
                 // Ensure seconds always appear in 2 digit format
                 if (seconds > 9) {
-                    timer.innerHTML = `Game Time &ndash; ${minutes}:${seconds++}`;
+                    timer.innerHTML = `Game Time &ndash; ${minutes}:${seconds}`;
                 } else {
-                    timer.innerHTML = `Game Time &ndash; ${minutes}:0${seconds++}`;
+                    timer.innerHTML = `Game Time &ndash; ${minutes}:0${seconds}`;
                 }
                 // Increment the minutes and set seconds to 0 after 59
                 if (seconds > 59) {
