@@ -307,17 +307,29 @@
                 // Set the timer interval to 1000ms === 1s
             }, 100);
         }
-
+        function refresh() {
         randomBoard();
         buildGameBoard();
         appendEvent();
+    }
+    refresh();
 
         //UI javascript
         document.getElementById('instructionsTrigger').addEventListener('click', function(e) {
             document.getElementById('instructions').classList.remove('close-instructions');
         });document.getElementById('closeInstructions').addEventListener('click', function(e) {
             document.getElementById('instructions').classList.add('close-instructions');
-        });;
+        });
+        document.getElementById('refresh').addEventListener('click', function(e) {
+            refresh();
+        });
+        document.getElementById('timeScores').addEventListener('click', function(e) {
+            document.getElementById('timeScoreBoard').classList.toggle('open');
+        });
+        document.getElementById('moveScores').addEventListener('click', function(e) {
+            document.getElementById('movesScoreBoard').classList.toggle('open');
+        });
+
 
     }, { "idb": 2 }],
     2: [function(require, module, exports) {
