@@ -170,6 +170,12 @@ body {
         top: -100vh;
         @include overlay;
         overflow: scroll;
+        img {
+            @include exit; 
+        }
+        h2 {
+            font-size: 2.25rem;
+        }
         div {
             width: 90%;
             margin: .5rem 5%;
@@ -190,6 +196,48 @@ body {
             span {
                 font-size: 3.375rem;
                 padding: 2.5%;
+            }
+        }
+    }
+    .info {
+        top: 100vh;
+        @include overlay;
+        img {
+            @include exit;
+        }
+        p {
+            width: 95%;
+            margin: .5rem 2.5%;
+            font-size: 1.1rem;
+        }
+        form {
+            text-align: left;
+            font-size: 1.5rem;
+        }
+        label, input, select, option {
+            width: 90%;
+            margin: .5rem 5%;
+        }
+        label {
+            font-size: 1rem;
+        }
+        input[type="reset"] {
+            @include button;
+            font-size: 1rem;
+            border: none;
+        }
+        input[type="submit"] {
+            @include button;
+            float: right;
+        }
+        span {
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            a {
+                font: bold 1.5rem/1 $font1;
+                color: $color5;
             }
         }
     }

@@ -141,34 +141,34 @@
             let matchCounter = 0;
             // Check that each element in the gameField array matches
             // the compareArr winning condition            
-            compareArr.forEach((element, index) =>  {
-                if (parseInt(element) === parseInt(gameField[index])) {                    
+            compareArr.forEach((element, index) => {
+                if (parseInt(element) === parseInt(gameField[index])) {
                     matchCounter++;
                 }
             });
-                if(matchCounter === 15) {
-                    //Display the screen that says you win and enter name form
+            if (matchCounter === 15) {
+                //Display the screen that says you win and enter name form
 
-                    // Set the details of the game
-                    gameStats = {
-                            moves: counter,
-                            timer: Math.floor(time / 1000),
-                            name: name
-                        }
-                        // Reset the game
-                    console.log('You Win!!');
-                    randomBoard();
-                    buildGameBoard();
-                    counter = 0;
+                // Set the details of the game
+                gameStats = {
+                        moves: counter,
+                        timer: Math.floor(time / 1000),
+                        name: name
+                    }
+                    // Reset the game
+                console.log('You Win!!');
+                randomBoard();
+                buildGameBoard();
+                counter = 0;
 
-                    // Add the info from this game to the DB
-                    dbPromise.then(db => {
-                        tx = db.transaction('timeScores', 'readwrite');
-                        timeScores = tx.objectStore('timeScores', 'readwrite');
-                        timeScores.add(gameStats, `key${entryCount}`);
-                    }).catch(err => console.log(err))
-                }
-            
+                // Add the info from this game to the DB
+                dbPromise.then(db => {
+                    tx = db.transaction('timeScores', 'readwrite');
+                    timeScores = tx.objectStore('timeScores', 'readwrite');
+                    timeScores.add(gameStats, `key${entryCount}`);
+                }).catch(err => console.log(err))
+            }
+
             // Increment the counts
             winCount++
             return entryCount++;
@@ -307,27 +307,41 @@
                 // Set the timer interval to 1000ms === 1s
             }, 100);
         }
+
         function refresh() {
-        randomBoard();
-        buildGameBoard();
-        appendEvent();
-    }
-    refresh();
+            randomBoard();
+            buildGameBoard();
+            appendEvent();
+        }
+        refresh();
 
         //UI javascript
         document.getElementById('instructionsTrigger').addEventListener('click', function(e) {
             document.getElementById('instructions').classList.remove('close-instructions');
-        });document.getElementById('closeInstructions').addEventListener('click', function(e) {
+        });
+        document.getElementById('closeInstructions').addEventListener('click', function(e) {
             document.getElementById('instructions').classList.add('close-instructions');
         });
         document.getElementById('refresh').addEventListener('click', function(e) {
             refresh();
         });
         document.getElementById('timeScores').addEventListener('click', function(e) {
-            document.getElementById('timeScoreBoard').classList.toggle('open');
+            document.getElementById('timeScoreBoard').classList.add('open');
+        });
+        document.getElementById('exitTimes').addEventListener('click', function(e) {
+            document.getElementById('timeScoreBoard').classList.remove('open');
         });
         document.getElementById('moveScores').addEventListener('click', function(e) {
-            document.getElementById('movesScoreBoard').classList.toggle('open');
+            document.getElementById('movesScoreBoard').classList.add('open');
+        });
+        document.getElementById('exitMoves').addEventListener('click', function(e) {
+            document.getElementById('movesScoreBoard').classList.remove('open');
+        });
+        document.getElementById('info').addEventListener('click', function(e) {
+            document.getElementById('infoBoard').classList.add('open');
+        });
+        document.getElementById('exitInfo').addEventListener('click', function(e) {
+            document.getElementById('infoBoard').classList.remove('open');
         });
 
 
