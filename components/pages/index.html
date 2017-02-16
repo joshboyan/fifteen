@@ -9,24 +9,27 @@ description: ""
 	
 <header role="banner">
 	<span id="instructionsTrigger">Fifteen</span>
+	<span>puzzle</span>
 	<img id="refresh" src="%img/refresh.png" alt="Refresh game">
 </header>
 <main role="main">
+	
+	<div class="wrapper">
+  		<div id="container"></div>
+	</div>
 	<div class="game-stats">
 		<p id="timer">Game Time &ndash;0:00</p>
 		<p id="counter">Moves &ndash; 0</p>
 	</div>
-	<div class="wrapper">
-  		<div id="container"></div>
-	</div>
+	
 </main>
 <footer role="navigation">
 	<img id="timeScores" src="%img/time.png" alt="View Best Time Leaderboard">
 	<img id="info" src="%img/info.png" alt="Info">
 	<img id="moveScores" src="%img/trophy.png" alt="Best Least Move Leaderboard">
 </footer>
-<aside id="instructions" class="instructions" role="complementary">
-	<p>Arrange game pieces into descending order.</p>
+<aside id="instructions" class="instructions close-instructions" role="complementary">
+	<p>Arrange game pieces into ascending order.</p>
 	<figure>
 		<img src="%img/starting.png" alt="Starting Game Board">
 		<figcation>Starting Game Board</figcation>
@@ -35,11 +38,38 @@ description: ""
 		<img src="%img/finished.png" alt="Finished Game Board">
 		<figcation>Finished Game Board</figcation>
 	</figure>
+	<button id="closeInstructions">Got It!!</button>
 </aside>
-<aside role="complementary">
-	<div id="timeScoreBoard"></div>
+
+<aside id="youWin" class="you-win" role="complementary">
+	<div>You Win!!</div>
+	<button id="closeYouWin">OK</button>
 </aside>
-<aside role="complementary">
-	<div id="movesScoreBoard"></div>
+<<aside id="yourName" class="your-name" role="complementary">
+<form action="">
+	<label for="name">Enter Your Initials</label>
+	<input name="name" id="name" type="text" placeholder="MLB" autofocus>
+	<input type="button" value="Done">
+</form>	
 </aside>
+<aside id="timeScoreBoard" class="time-score-board" role="complementary">
+		<h2>Least Moves</h2>
+		<div><span class="rank">1)</span><span class="intials">MLB</span><span class="moves">611</span></div>
+		<div><span class="rank">1)</span><span class="intials">MLB</span><span class="moves">611</span></div>
+		<div><span class="rank">1)</span><span class="intials">MLB</span><span class="moves">611</span></div>
+		<div class="latest"><span class="rank">1)</span><span class="intials">MLB</span><span class="moves">611</span></div>
+		<div><span class="rank">1)</span><span class="intials">MLB</span><span class="moves">611</span></div>
+		<div><span class="rank">1)</span><span class="intials">MLB</span><span class="moves">611</span></div>
+		<div><span class="rank">1)</span><span class="intials">MLB</span><span class="moves">611</span></div>
+		<div><span class="rank">1)</span><span class="intials">MLB</span><span class="moves">611</span></div>
+		<div><span class="rank">1)</span><span class="intials">MLB</span><span class="moves">611</span></div>
+		<div><span class="rank">1)</span><span class="intials">MLB</span><span class="moves">611</span></div>
+		<div><span class="rank">1)</span><span class="intials">MLB</span><span class="moves">611</span></div>
+</aside>
+<!--<aside id="movesScoreBoard" role="complementary">
+<h2>Fastest Time</h2>
+	<div></div>
+</aside>-->
+
+
 

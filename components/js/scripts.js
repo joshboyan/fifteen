@@ -160,12 +160,12 @@
                     randomBoard();
                     buildGameBoard();
                     counter = 0;
-console.log(`key${entryCount + 1}`);
+
                     // Add the info from this game to the DB
                     dbPromise.then(db => {
                         tx = db.transaction('timeScores', 'readwrite');
                         timeScores = tx.objectStore('timeScores', 'readwrite');
-                        timeScores.add(gameStats, `key${entryCount + 1}`);
+                        timeScores.add(gameStats, `key${entryCount}`);
                     }).catch(err => console.log(err))
                 }
             
@@ -311,6 +311,13 @@ console.log(`key${entryCount + 1}`);
         randomBoard();
         buildGameBoard();
         appendEvent();
+
+        //UI javascript
+        document.getElementById('instructionsTrigger').addEventListener('click', function(e) {
+            document.getElementById('instructions').classList.remove('close-instructions');
+        });document.getElementById('closeInstructions').addEventListener('click', function(e) {
+            document.getElementById('instructions').classList.add('close-instructions');
+        });;
 
     }, { "idb": 2 }],
     2: [function(require, module, exports) {
