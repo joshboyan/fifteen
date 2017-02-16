@@ -149,6 +149,9 @@ body {
             font: bold 7.594rem/1.5 $font1;
             margin-bottom: 3.375rem;
         }
+        button {
+            @include button;
+        }
         form {
             font: 3.375rem/1 $font1;
             padding-top: 2.25rem;

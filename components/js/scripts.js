@@ -111,9 +111,9 @@
 
         function randomBoard() {
             //Ensure game board array is cleared
-            //gameField = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, null, 15];//Change this back to 1-15
+            gameField = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, null, 15];//Change this back to 1-15
             //Game piece values for new game
-            gameField = [];
+            /*gameField = [];
             let startArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
             while (startArr.length > 0) {
                 //Set picked to a random number from 0 - 14
@@ -123,7 +123,7 @@
                 gameField.push(startArr.splice(startArr.indexOf(picked), 1));
             }
             //Set the final space to be blank with null spaceholder
-            gameField.push(null);
+            gameField.push(null);*/
             //Run check to see if the game cannot be won
             if (!boardCheck()) {
                 //Call the function recursively if the game cannot be won
@@ -167,11 +167,15 @@
                     timeScores = tx.objectStore('timeScores', 'readwrite');
                     timeScores.add(gameStats, `key${entryCount}`);
                 }).catch(err => console.log(err))
+                // Increment the counter for the idb key
+                 entryCount++
+                 //Show the winning screen
+                 document.getElementById('youWin').classList.add('open');
             }
 
             // Increment the counts
             winCount++
-            return entryCount++;
+            return;
         }
         // Find the number of permtations for the given board. We compare each piece 
         // sequencialy to all the other pieces that comes after it from left to right
@@ -266,6 +270,7 @@
                         gameField[gameField.indexOf(null)] = gameField[targetId];
                         // Remove the game piece value from targetId
                         gameField[targetId] = null;
+                        console.log(entryCount);
                         // Render game board with new positions
                         buildGameBoard();
                         // Winning condition check if pieces are in numerical order
