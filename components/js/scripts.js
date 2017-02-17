@@ -26,7 +26,7 @@
         minified with comments removed for the dist build.*/
         var idb = require('idb');
         'use strict';
-        'esversion: 7';
+        'esversion: 6';
         var gameField = [];
         var compareArr = [
             [1],
@@ -73,31 +73,33 @@
             name: 'Joey'
         }
         var dbPromise = idb.open('scores', 1, upgradeDB => {
-            let timeScores = upgradeDB.createObjectStore('timeScores');
-            timeScores.put(gameStats, 'key1');
-            timeScores.put(game1, 'key2');
-            timeScores.put(game2, 'key3');
-            timeScores.put(game3, 'key4');
+            let scores = upgradeDB.createObjectStore('scores');
+            scores.createIndex('timer', 'timer');
+            scores.createIndex('moves', 'moves')
+            scores.put(gameStats, 'key1');
+            scores.put(game1, 'key2');
+            scores.put(game2, 'key3');
+            scores.put(game3, 'key4');
         });
         var tx;
-        var timeScores;
+        var scores;
         var entryCount;
         dbPromise.then(db => {
-            tx = db.transaction('timeScores', 'readwrite');
-            timeScores = tx.objectStore('timeScores', 'readwrite');
-            entryCount = timeScores.count();
+            tx = db.transaction('scores', 'readwrite');
+            scores = tx.objectStore('scores', 'readwrite');
+            entryCount = scores.count();
             //console.log(entryCount);
             return entryCount;
         }).then(entryCount => {
             // console.log(`There are ${entryCount} entries in this oject store`);
             var i = 0;
             var scoreCardEntry;
-            console.log(entryCount);
+            //console.log(entryCount);
             while (i < entryCount) {
                 i++;
                 var record = `key${i}`;
                 //console.log(record);
-                scoreCardEntry = timeScores.get(record);
+                scoreCardEntry = scores.get(record);
                 //console.log(scoreCardEntry.request.readyState);
                 scoreCardEntry.then(function(scoreCardEntry) {
                     //console.log(scoreCardEntry);
@@ -134,7 +136,7 @@
         function winCheck() {
             // Get the initial count from the DB
             if (winCount == 0) {
-                entryCount = entryCount.request.result + 1;
+                entryCount = entryCount.request.result;
             }
             //variable to store the number of elements that match between
             //compareArr and gameField
@@ -148,36 +150,35 @@
             });
             if (matchCounter === 15) {
                 //Display the screen that says you win and enter name form
-
-                // Set the details of the game
-                gameStats = {
-                        moves: counter,
-                        timer: Math.floor(time / 1000),
-                        name: name
-                    }
-                    // Reset the game
-                console.log('You Win!!');
-                randomBoard();
-                buildGameBoard();
-                counter = 0;
-
-                // Add the info from this game to the DB
-                dbPromise.then(db => {
-                    tx = db.transaction('timeScores', 'readwrite');
-                    timeScores = tx.objectStore('timeScores', 'readwrite');
-                    timeScores.add(gameStats, `key${entryCount}`);
-                }).catch(err => console.log(err))
-                // Increment the counter for the idb key
-                 entryCount++
-                 //Show the winning screen
-                 document.getElementById('youWin').classList.add('open');
+                document.getElementById('youWin').classList.add('open');
             }
-
             // Increment the counts
-            winCount++
-            return;
+            winCount++;
         }
-        // Find the number of permtations for the given board. We compare each piece 
+        function winSequence() {
+            // Set the details of the game
+            gameStats = {
+                moves: counter,
+                timer: Math.floor(time / 1000),
+                name: name
+            }
+            console.log('You Win!!');
+            removeTimer();
+            // Initialize a new game
+            counter = 0;
+            document.getElementById('counter').innerHTML='Moves:0';
+            refresh();
+            // Add the info from this game to the DB
+            dbPromise.then(db => {
+                tx = db.transaction('scores', 'readwrite');
+                scores = tx.objectStore('scores', 'readwrite');
+                scores.add(gameStats, `key${entryCount}`);
+            }).catch(err => console.log(err))
+            // Increment the counter for the idb key
+            entryCount++;
+            buildScoreBoard('moves');
+        }
+        // Find the number of permtations for the given board. We compare each piece
         // sequencialy to all the other pieces that comes after it from left to right
         // add increment our accummulator when the value of the first piece is greater than
         // the second one. Odd number of permutations is unsolvable.
@@ -234,7 +235,7 @@
                 }
             });
             // Start the game timer
-            gameTimer();
+
         }
 
         function checkEmpty(targetId) {
@@ -247,12 +248,10 @@
                 blankSpace === targetId - 4 ||
                 blankSpace === targetId + 4) {
                 // Increment the counter and update the DOM
-                document.getElementById('counter').innerHTML = `Moves: ${counter++}`;
-
+                document.getElementById('counter').innerHTML = ` Moves:${counter++}`;
                 return true;
             }
         }
-
         function appendEvent() {
             // Get all of the game pieces
             let tiles = document.getElementsByClassName('box');
@@ -282,10 +281,17 @@
                 });
             })
         }
-
+        function removeTimer() {
+            // Remove old timer and create a p element to hold the new one
+            // created in gameTimer
+            document.getElementById("timer").remove(timer);
+            let newTimer = document.createElement('p');
+            newTimer.id = 'timer';
+            document.getElementById('gameStats').appendChild(newTimer);
+        }
         function gameTimer() {
             let timer = document.getElementById("timer");
-            timer.innerHTML = 'Game Time &ndash; 0:00';
+
             seconds = 0;
             minutes = 0;
             let start = new Date().getTime();
@@ -296,10 +302,11 @@
                 // Set the timer interval to 1000ms === 1s
                 seconds = Math.floor(time / 1000);
                 // Ensure seconds always appear in 2 digit format
+
                 if (seconds > 9) {
-                    timer.innerHTML = `Game Time &ndash; ${minutes}:${seconds}`;
+                    timer.innerHTML = `${minutes}:${seconds}`;
                 } else {
-                    timer.innerHTML = `Game Time &ndash; ${minutes}:0${seconds}`;
+                    timer.innerHTML = `${minutes}:0${seconds}`;
                 }
                 // Increment the minutes and set seconds to 0 after 59
                 if (seconds > 59) {
@@ -312,11 +319,24 @@
                 // Set the timer interval to 1000ms === 1s
             }, 100);
         }
+        function buildScoreBoard(type) {
+            dbPromise.then(function (db) {
+                var tx = db.transaction('scores');
+                var store = tx.objectStore('scores');
+                var myIndex = store.index(type)
+                var rankings =  myIndex.getAll();
+                return rankings;
+            }).then(function (rankings) {
+                console.log(rankings);
 
+            });
+        }
         function refresh() {
             randomBoard();
             buildGameBoard();
             appendEvent();
+            removeTimer()
+            gameTimer();
         }
         refresh();
 
@@ -331,12 +351,14 @@
             refresh();
         });
         document.getElementById('timeScores').addEventListener('click', function(e) {
+            buildScoreBoard('timer');
             document.getElementById('timeScoreBoard').classList.add('open');
         });
         document.getElementById('exitTimes').addEventListener('click', function(e) {
             document.getElementById('timeScoreBoard').classList.remove('open');
         });
         document.getElementById('moveScores').addEventListener('click', function(e) {
+            buildScoreBoard('moves');
             document.getElementById('movesScoreBoard').classList.add('open');
         });
         document.getElementById('exitMoves').addEventListener('click', function(e) {
@@ -347,6 +369,15 @@
         });
         document.getElementById('exitInfo').addEventListener('click', function(e) {
             document.getElementById('infoBoard').classList.remove('open');
+        });
+        document.getElementById('exitYouWin').addEventListener('click', function(e) {
+            document.getElementById('youWin').classList.remove('open');
+            document.getElementById('yourName').classList.add('open');
+        });
+        document.getElementById('exitYourName').addEventListener('click', function(e) {
+            document.getElementById('yourName').classList.remove('open');
+            name = document.getElementsByTagName('input')[0].value;
+            winSequence();
         });
 
 

@@ -14,9 +14,9 @@ description: ""
     <div class="wrapper">
         <div id="container"></div>
     </div>
-    <div class="game-stats">
-        <p id="timer">Game Time &ndash;0:00</p>
-        <p id="counter">Moves &ndash; 0</p>
+    <div id="gameStats" class="game-stats">
+        <p id="counter">Moves:0</p>
+        <p id="timer">0:00</p>
     </div>
 </main>
 <footer role="navigation">
@@ -38,13 +38,13 @@ description: ""
 </aside>
 <aside id="youWin" class="you-win" role="complementary">
     <div>You Win!!</div>
-    <button id="closeYouWin">OK</button>
+    <button id="exitYouWin">OK</button>
 </aside>
-<<aside id="yourName" class="your-name" role="complementary">
+<aside id="yourName" class="your-name" role="complementary">
     <form action="">
         <label for="name">Enter Your Initials</label>
-        <input name="name" id="name" type="text" placeholder="MLB" autofocus>
-        <input type="button" value="Done">
+        <input name="name" id="name" type="text" placeholder="MLB" maxlength="3" autofocus>
+        <input id="exitYourName" type="button" value="Done">
     </form>
     </aside>
     <aside id="timeScoreBoard" class="time-score-board" role="complementary">
@@ -63,13 +63,13 @@ description: ""
     <aside id="infoBoard" class="info" role="complementary">
     <img src="%img/x-mark.png" alt="exit button" id='exitInfo'>
     <p>This game is a progressive web app built with love in Portland, OR. If you want to learn more, collaborate or need an app or website built; give me a holla with the form. Or Chek out my portfolio by following the links below.<br> Or hire someone not as good.<br> Whatever ;)</p>
-        <form action="POST">
+        <form action="GET">
             <label for="name">Name*</label>
             <input name="name" type="text" autofocus required>
             <label for="email">Email*</label>
             <input name="email" type="text" required>
             <label for="select">What's Up?*</label>
-            <select name="carlist" form="carform" required="">
+            <select name="select" required>
                 <option value="volvo">Build Me a Site!</option>
                 <option value="saab">Build Me an App!</option>
                 <option value="opel">I Need a Redesign!</option>
