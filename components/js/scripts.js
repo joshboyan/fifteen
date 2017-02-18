@@ -52,27 +52,28 @@
         var minutes = 0;
         var name;
         var time;
+        var tx;
+        var scores;
+        var entryCount;
         // Initial entries in indexedDB
-        var gameStats = {
-            moves: counter,
-            timer: Math.floor(time / 1000),
-            name: name
-        }
         var game1 = {
-            moves: 22,
-            timer: (400),
-            name: 'John'
-        }
+            moves: 178,
+            timer: 353,
+            name: 'MLB',
+            key: 1
+        };
         var game2 = {
-            moves: 30,
-            timer: (500),
-            name: 'Beth'
-        }
+            moves: 307,
+            timer: 530,
+            name: 'CCK',
+            key: 2
+        };
         var game3 = {
-            moves: 25,
-            timer: (600),
-            name: 'Joey'
-        }
+            moves: 648,
+            timer: 609,
+            name: 'OGB',
+            key: 3
+        };
         // Open an indexedDB database
         var dbPromise = idb.open('scores', 1, upgradeDB => {
             // Create object store in the database
@@ -81,16 +82,14 @@
             scores.createIndex('timer', 'timer');
             scores.createIndex('moves', 'moves')
             // Add initial entries to indexedDB
-            scores.put(game1, 'key2');
-            scores.put(game2, 'key3');
-            scores.put(game3, 'key4');
+            scores.put(game1, 'key1');
+            scores.put(game2, 'key2');
+            scores.put(game3, 'key3');
+        }).catch(error => {
+            console.error(error);
         });
-        /*
-        Not sure if I need any of these but entryCount
-         */
-        var tx;
-        var scores;
-        var entryCount;
+
+
         // Access the database
         dbPromise.then(db => {
             // Create a new transaction
@@ -99,26 +98,8 @@
             scores = tx.objectStore('scores', 'readwrite');
             //Get the number of entries n the objectStore
             entryCount = scores.count();
-            //console.log(entryCount);
             return entryCount;
-        })/*.then(entryCount => {
-            // console.log(`There are ${entryCount} entries in this objectStore`);
-            var i = 0;
-            var scoreCardEntry;
-            //console.log(entryCount);
-            while (i < entryCount) {
-                i++;
-                var record = `key${i}`;
-                //console.log(record);
-                scoreCardEntry = scores.get(record);
-                //console.log(scoreCardEntry.request.readyState);
-                scoreCardEntry.then(function(scoreCardEntry) {
-                    //console.log(scoreCardEntry);
-                    //console.log(`${scoreCardEntry.name} won in ${scoreCardEntry.moves} moves!`);
-                })
-            }
-            return entryCount;
-        })*/.catch(error => {
+        }).catch(error => {
             console.error(error);
         });
 
@@ -173,11 +154,12 @@
         }
         function winSequence() {
             // Set the details of the game
-            gameStats = {
+            let gameStats = {
                 moves: counter,
                 timer: Math.floor(time / 1000),
-                name: name
-            }
+                name: name,
+                key: entryCount
+            };
             console.log('You Win!!');
             removeTimer();
             // Initialize a new game
@@ -189,7 +171,7 @@
                 tx = db.transaction('scores', 'readwrite');
                 scores = tx.objectStore('scores', 'readwrite');
                 scores.add(gameStats, `key${entryCount}`);
-            }).catch(err => console.log(err))
+            }).catch(err => console.log(err));
             // Increment the counter for the idb key
             entryCount++;
             // Set timeScoreBoard "x" to open movesScoreBoard
@@ -201,8 +183,8 @@
             openTimeScoreBoard();
 
         }
-        // Find the number of permtations for the given board. We compare each piece
-        // sequencialy to all the other pieces that comes after it from left to right
+        // Find the number of permutations for the given board. We compare each piece
+        // sequencially to all the other pieces that comes after it from left to right
         // add increment our accummulator when the value of the first piece is greater than
         // the second one. Odd number of permutations is unsolvable.
         function boardCheck() {
@@ -211,7 +193,7 @@
                 // Compare that piece to every other piece on the board
                 starting.map((mapCurr, mapIndex) => {
                     // If the index of the game piece we grabbed with map is less than the index
-                    // of the game piece we gradd with reduce; set the map game piece value to 15.
+                    // of the game piece we grab with reduce; set the map game piece value to 15.
                     // This ensures it is not counted in total permutations regardless of value.
                     if (mapIndex < reduceIndex) mapCurr = 15;
                     // console.log(reducePrev, parseInt(reduceCurr), parseInt(mapCurr));
@@ -224,11 +206,7 @@
             }, 0);
             // If the number of permutations is even return true to randomBoard() continue with the game.
             // If the number is odd a new board is generated.
-            if (permutations % 2 === 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return permutations % 2 === 0;
         }
 
         function buildGameBoard() {
@@ -248,7 +226,7 @@
             gameField.forEach((field, index) => {
                 div = document.createElement('div');
                 div.className = 'box';
-                // Create a game piece for the each element in the random arry af 1-15
+                // Create a game piece for the each element in the random array of 1-15
                 if (field) {
                     gamePieces(index, field);
                     // Create the final blank game piece with a &nbsp; when the array 
@@ -257,8 +235,6 @@
                     gamePieces(field, String.fromCharCode(160));
                 }
             });
-            // Start the game timer
-
         }
 
         function checkEmpty(targetId) {
@@ -271,7 +247,7 @@
                 blankSpace === targetId - 4 ||
                 blankSpace === targetId + 4) {
                 // Increment the counter and update the DOM
-                document.getElementById('counter').innerHTML = ` Moves:${counter++}`;
+                document.getElementById('counter').innerHTML = `Moves:${counter++}`;
                 return true;
             }
         }
@@ -285,7 +261,7 @@
                 // Add click event to all game pieces
                 tile.addEventListener('click', e => {
                     // Set targetIdto the game piece the user clicked 
-                    var targetId = parseInt(e.target.id);
+                    let targetId = parseInt(e.target.id);
                     // If the game piece the user clicked is a legal move
                     if (checkEmpty(targetId)) {
                         // Set the blank piece to the targetId the user clicked
@@ -307,25 +283,24 @@
         function removeTimer() {
             // Remove old timer and create a p element to hold the new one
             // created in gameTimer
-            document.getElementById("timer").remove(timer);
+            document.getElementById('timer').remove(timer);
             let newTimer = document.createElement('p');
             newTimer.id = 'timer';
             document.getElementById('gameStats').appendChild(newTimer);
         }
         function gameTimer() {
-            let timer = document.getElementById("timer");
-
+            let timer = document.getElementById('timer');
+            // set timer to 0
             seconds = 0;
             minutes = 0;
+            // Get initial time value
             let start = new Date().getTime();
-
             window.setInterval(function() {
                 //Find how much time has elasped between ow and starting time
                 time = new Date().getTime() - start;
                 // Set the timer interval to 1000ms === 1s
                 seconds = Math.floor(time / 1000);
                 // Ensure seconds always appear in 2 digit format
-
                 if (seconds > 9) {
                     timer.innerHTML = `${minutes}:${seconds}`;
                 } else {
@@ -340,28 +315,35 @@
                 }
                 return time;
                 // Set the timer interval to 1000ms === 1s
-            }, 100);
+            }, 1000);
         }
         function buildScoreBoard(type, board) {
+            // Open up the database
             dbPromise.then(function (db) {
-                var tx = db.transaction('scores');
-                var store = tx.objectStore('scores');
-                var myIndex = store.index(type)
-                var rankings =  myIndex.getAll();
-                return rankings;
+                // Create a transaction
+                let tx = db.transaction('scores');
+                // open up the object store
+                let store = tx.objectStore('scores');
+                // Specify the index to use
+                let myIndex = store.index(type);
+                // Get all the entries ordered by the index
+
+                return myIndex.getAll();
             }).then(function (rankings) {
-                console.log(rankings, board);
+                // Clean everything of the board
                 board = document.getElementById(board);
                 while (board.hasChildNodes()) {
                     board.removeChild(board.lastChild);
                 }
+                // Format each database key into an html entry for the score boards
                 rankings.forEach(function(rank, index) {
-                    console.log(rank);
-                    var node = document.createElement('div');
+                    let node = document.createElement('div');
                     node.innerHTML =`<span>${index+1})</span><span>${rank.name}</span><span>${rank[type]}</span>`;
                     board.appendChild(node);
                 });
 
+            }).catch(error => {
+                console.error(error);
             });
         }
         function openTimeScoreBoard() {
@@ -377,7 +359,7 @@
             randomBoard();
             buildGameBoard();
             appendEvent();
-            removeTimer()
+            removeTimer();
             gameTimer();
             // Set the scoreboard "x's" to just close overlay
             document.getElementById('exitTimesWin').style.display='none';
@@ -387,49 +369,49 @@
         }
         refresh();
 
-        //UI click events javascript
-        document.getElementById('instructionsTrigger').addEventListener('click', function(e) {
+        // Click events to open and close UI overlays
+        document.getElementById('instructionsTrigger').addEventListener('click', function() {
             document.getElementById('instructions').classList.remove('close-instructions');
         });
-        document.getElementById('closeInstructions').addEventListener('click', function(e) {
+        document.getElementById('closeInstructions').addEventListener('click', function() {
             document.getElementById('instructions').classList.add('close-instructions');
         });
-        document.getElementById('refresh').addEventListener('click', function(e) {
+        document.getElementById('refresh').addEventListener('click', function() {
             refresh();
         });
-        document.getElementById('timeScores').addEventListener('click', function(e) {
+        document.getElementById('timeScores').addEventListener('click', function() {
             openTimeScoreBoard();
 
         });
-        document.getElementById('exitTimes').addEventListener('click', function(e) {
+        document.getElementById('exitTimes').addEventListener('click', function() {
             document.getElementById('timeScoreBoard').classList.remove('open');
         });
-        document.getElementById('exitTimesWin').addEventListener('click', function(e) {
+        document.getElementById('exitTimesWin').addEventListener('click', function() {
             document.getElementById('timeScoreBoard').classList.remove('open');
             openMovesScoreBoard();
-        })
-        document.getElementById('moveScores').addEventListener('click', function(e) {
+        });
+        document.getElementById('moveScores').addEventListener('click', function() {
             openMovesScoreBoard();
 
         });
-        document.getElementById('exitMoves').addEventListener('click', function(e) {
+        document.getElementById('exitMoves').addEventListener('click', function() {
             document.getElementById('movesScoreBoard').classList.remove('open');
         });
-        document.getElementById('exitMovesWin').addEventListener('click', function(e) {
+        document.getElementById('exitMovesWin').addEventListener('click', function() {
             document.getElementById('movesScoreBoard').classList.remove('open');
             refresh();
         });
-        document.getElementById('info').addEventListener('click', function(e) {
+        document.getElementById('info').addEventListener('click', function() {
             document.getElementById('infoBoard').classList.add('open');
         });
-        document.getElementById('exitInfo').addEventListener('click', function(e) {
+        document.getElementById('exitInfo').addEventListener('click', function() {
             document.getElementById('infoBoard').classList.remove('open');
         });
-        document.getElementById('exitYouWin').addEventListener('click', function(e) {
+        document.getElementById('exitYouWin').addEventListener('click', function() {
             document.getElementById('youWin').classList.remove('open');
             document.getElementById('yourName').classList.add('open');
         });
-        document.getElementById('exitYourName').addEventListener('click', function(e) {
+        document.getElementById('exitYourName').addEventListener('click', function() {
             document.getElementById('yourName').classList.remove('open');
             name = document.getElementsByTagName('input')[0].value;
             winSequence();
