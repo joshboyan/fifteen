@@ -60,19 +60,19 @@
             moves: 178,
             timer: 353,
             name: 'MLB',
-            key: 1
+            key: 0
         };
         var game2 = {
             moves: 307,
             timer: 530,
             name: 'CCK',
-            key: 2
+            key: 1
         };
         var game3 = {
             moves: 648,
             timer: 609,
             name: 'OGB',
-            key: 3
+            key: 2
         };
         // Open an indexedDB database
         var dbPromise = idb.open('scores', 1, upgradeDB => {
@@ -338,6 +338,11 @@
                 // Format each database key into an html entry for the score boards
                 rankings.forEach(function(rank, index) {
                     let node = document.createElement('div');
+                    console.log(rank.key);
+                    console.log(entryCount);
+                    if(entryCount > 3 && rank.key == (entryCount -1)) {
+                        node.classList.add('latest');
+                    }
                     node.innerHTML =`<span>${index+1})</span><span>${rank.name}</span><span>${rank[type]}</span>`;
                     board.appendChild(node);
                 });
