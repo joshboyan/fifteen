@@ -41,7 +41,7 @@ description: ""
     <button id="exitYouWin">OK</button>
 </aside>
 <aside id="yourName" class="your-name" role="complementary">
-    <form action="">
+    <form action="GET">
         <label for="name">Enter Your Initials</label>
         <input name="name" id="name" type="text" placeholder="MLB" maxlength="3" autofocus>
         <input id="exitYourName" type="button" value="Done">
@@ -49,23 +49,22 @@ description: ""
     </aside>
     <aside id="timeScoreBoard" class="time-score-board" role="complementary">
     <img src="%img/x-mark.png" alt="exit button" id='exitTimes'>
-        <h2>Fastest Times</h2>        
-        <div><span class="rank">1)</span><span class="intials">MLB</span><span class="time">411</span></div>
+        <img src="%img/x-mark.png" alt="exit button" id='exitTimesWin'>
+        <h2>Fastest Times</h2>
+        <div id="timeEntries"></div>
     </aside>
     <aside id="movesScoreBoard" class="moves-score-board" role="complementary">
     <img src="%img/x-mark.png" alt="exit button" id='exitMoves'>
-        <h2>Least Moves</h2>        
-        <div>
-            <div><span class="rank">1)</span><span class="intials">MLB</span><span class="moves">611</span></div>
-            <div class="latest"><span class="rank">1)</span><span class="intials">MLB</span><span class="moves">611</span></div>
-        </div>
+        <img src="%img/x-mark.png" alt="exit button" id='exitMovesWin'>
+        <h2>Least Moves</h2>
+        <div id="moveEntries"></div>
     </aside>
     <aside id="infoBoard" class="info" role="complementary">
     <img src="%img/x-mark.png" alt="exit button" id='exitInfo'>
     <p>This game is a progressive web app built with love in Portland, OR. If you want to learn more, collaborate or need an app or website built; give me a holla with the form. Or Chek out my portfolio by following the links below.<br> Or hire someone not as good.<br> Whatever ;)</p>
         <form action="GET">
             <label for="name">Name*</label>
-            <input name="name" type="text" autofocus required>
+            <input name="name" type="text"required>
             <label for="email">Email*</label>
             <input name="email" type="text" required>
             <label for="select">What's Up?*</label>

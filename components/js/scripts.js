@@ -52,6 +52,7 @@
         var minutes = 0;
         var name;
         var time;
+        // Initial entries in indexedDB
         var gameStats = {
             moves: counter,
             timer: Math.floor(time / 1000),
@@ -72,26 +73,36 @@
             timer: (600),
             name: 'Joey'
         }
+        // Open an indexedDB database
         var dbPromise = idb.open('scores', 1, upgradeDB => {
+            // Create object store in the database
             let scores = upgradeDB.createObjectStore('scores');
+            // Create keys to query database
             scores.createIndex('timer', 'timer');
             scores.createIndex('moves', 'moves')
-            scores.put(gameStats, 'key1');
+            // Add initial entries to indexedDB
             scores.put(game1, 'key2');
             scores.put(game2, 'key3');
             scores.put(game3, 'key4');
         });
+        /*
+        Not sure if I need any of these but entryCount
+         */
         var tx;
         var scores;
         var entryCount;
+        // Access the database
         dbPromise.then(db => {
+            // Create a new transaction
             tx = db.transaction('scores', 'readwrite');
+            // Select the object store to work with
             scores = tx.objectStore('scores', 'readwrite');
+            //Get the number of entries n the objectStore
             entryCount = scores.count();
             //console.log(entryCount);
             return entryCount;
-        }).then(entryCount => {
-            // console.log(`There are ${entryCount} entries in this oject store`);
+        })/*.then(entryCount => {
+            // console.log(`There are ${entryCount} entries in this objectStore`);
             var i = 0;
             var scoreCardEntry;
             //console.log(entryCount);
@@ -107,7 +118,7 @@
                 })
             }
             return entryCount;
-        }).catch(error => {
+        })*/.catch(error => {
             console.error(error);
         });
 
@@ -149,8 +160,13 @@
                 }
             });
             if (matchCounter === 15) {
-                //Display the screen that says you win and enter name form
+                // Display the screen that says you win and enter name form
                 document.getElementById('youWin').classList.add('open');
+                document.getElementById('name').autofocus = true;
+                // Script to autofocus cursor in browsers without native support;
+                if (!("autofocus" in document.createElement("input"))) {
+                    document.getElementById("name").focus();
+                }
             }
             // Increment the counts
             winCount++;
@@ -167,7 +183,7 @@
             // Initialize a new game
             counter = 0;
             document.getElementById('counter').innerHTML='Moves:0';
-            refresh();
+
             // Add the info from this game to the DB
             dbPromise.then(db => {
                 tx = db.transaction('scores', 'readwrite');
@@ -176,7 +192,14 @@
             }).catch(err => console.log(err))
             // Increment the counter for the idb key
             entryCount++;
-            buildScoreBoard('moves');
+            // Set timeScoreBoard "x" to open movesScoreBoard
+            document.getElementById('exitTimes').style.display='none';
+            document.getElementById('exitTimesWin').style.display='block';
+            // Set movesScoreBoard "x" to restart the game
+            document.getElementById('exitMoves').style.display='none';
+            document.getElementById('exitMovesWin').style.display='block';
+            openTimeScoreBoard();
+
         }
         // Find the number of permtations for the given board. We compare each piece
         // sequencialy to all the other pieces that comes after it from left to right
@@ -319,7 +342,7 @@
                 // Set the timer interval to 1000ms === 1s
             }, 100);
         }
-        function buildScoreBoard(type) {
+        function buildScoreBoard(type, board) {
             dbPromise.then(function (db) {
                 var tx = db.transaction('scores');
                 var store = tx.objectStore('scores');
@@ -327,20 +350,44 @@
                 var rankings =  myIndex.getAll();
                 return rankings;
             }).then(function (rankings) {
-                console.log(rankings);
+                console.log(rankings, board);
+                board = document.getElementById(board);
+                while (board.hasChildNodes()) {
+                    board.removeChild(board.lastChild);
+                }
+                rankings.forEach(function(rank, index) {
+                    console.log(rank);
+                    var node = document.createElement('div');
+                    node.innerHTML =`<span>${index+1})</span><span>${rank.name}</span><span>${rank[type]}</span>`;
+                    board.appendChild(node);
+                });
 
             });
         }
+        function openTimeScoreBoard() {
+            buildScoreBoard('timer', 'timeEntries');
+            document.getElementById('timeScoreBoard').classList.add('open');
+        }
+        function openMovesScoreBoard() {
+            buildScoreBoard('moves', 'moveEntries');
+            document.getElementById('movesScoreBoard').classList.add('open');
+        }
+        // Restart the game
         function refresh() {
             randomBoard();
             buildGameBoard();
             appendEvent();
             removeTimer()
             gameTimer();
+            // Set the scoreboard "x's" to just close overlay
+            document.getElementById('exitTimesWin').style.display='none';
+            document.getElementById('exitTimes').style.display='block';
+            document.getElementById('exitMovesWin').style.display='none';
+            document.getElementById('exitMoves').style.display='block';
         }
         refresh();
 
-        //UI javascript
+        //UI click events javascript
         document.getElementById('instructionsTrigger').addEventListener('click', function(e) {
             document.getElementById('instructions').classList.remove('close-instructions');
         });
@@ -351,18 +398,26 @@
             refresh();
         });
         document.getElementById('timeScores').addEventListener('click', function(e) {
-            buildScoreBoard('timer');
-            document.getElementById('timeScoreBoard').classList.add('open');
+            openTimeScoreBoard();
+
         });
         document.getElementById('exitTimes').addEventListener('click', function(e) {
             document.getElementById('timeScoreBoard').classList.remove('open');
         });
+        document.getElementById('exitTimesWin').addEventListener('click', function(e) {
+            document.getElementById('timeScoreBoard').classList.remove('open');
+            openMovesScoreBoard();
+        })
         document.getElementById('moveScores').addEventListener('click', function(e) {
-            buildScoreBoard('moves');
-            document.getElementById('movesScoreBoard').classList.add('open');
+            openMovesScoreBoard();
+
         });
         document.getElementById('exitMoves').addEventListener('click', function(e) {
             document.getElementById('movesScoreBoard').classList.remove('open');
+        });
+        document.getElementById('exitMovesWin').addEventListener('click', function(e) {
+            document.getElementById('movesScoreBoard').classList.remove('open');
+            refresh();
         });
         document.getElementById('info').addEventListener('click', function(e) {
             document.getElementById('infoBoard').classList.add('open');
