@@ -11,6 +11,7 @@ var gulp = require('gulp'),
     panini = require('panini'),
     sitemap = require('gulp-sitemap'),
     replace = require('gulp-replace'),
+    browserify = require('gulp-browserify'),
     runSequence = require('run-sequence');
 
 var jsSources = ['./components/js/*.js']; //may need to dictate specific concatenation order
@@ -42,6 +43,9 @@ gulp.task('js', function() {
 	.pipe(concat('scripts.js'))
   .pipe(jshint())
   .pipe(jshint.reporter('default'))
+  .pipe(browserify({
+          insertGlobals : true
+        }))
 	.pipe(gulp.dest('./builds/dev/js'))
 });
 
@@ -51,6 +55,9 @@ gulp.task('jsDist', function () {
             presets: ['es2015']
         }))
         .pipe(concat('scripts.js'))
+        .pipe(browserify({
+          insertGlobals : true
+        }))
         .pipe(uglify())
         .pipe(gulp.dest('builds/dist/js'))
 });
