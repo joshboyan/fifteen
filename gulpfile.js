@@ -107,7 +107,9 @@ gulp.task('panini',function() {
       helpers: './components/helpers/',
       data: './components/data/'
     }))
-    .pipe(replace(/(%)/g, './builds/dev/'))
+    .pipe(replace(/(js\/)/g, './builds/dev/js/'))
+    .pipe(replace(/(css\/)/g, './builds/dev/css/'))
+    .pipe(replace(/(img\/)/g, './builds/dev/img/'))
     .pipe(gulp.dest('./builds/dev'));
 });
 
@@ -120,7 +122,6 @@ gulp.task('paniniDist', function() {
       helpers: './components/helpers/',
       data: './components/data/'
     }))
-    .pipe(replace(/(%)/g, ''))
     .pipe(gulp.dest('./builds/dist'));
 });
 
