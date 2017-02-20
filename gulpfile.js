@@ -12,6 +12,10 @@ var gulp = require('gulp'),
     sitemap = require('gulp-sitemap'),
     replace = require('gulp-replace'),
     browserify = require('gulp-browserify'),
+    source = require('vinyl-source-stream'),
+    buffer = require('vinyl-buffer'),
+    sourcemaps = require('gulp-sourcemaps'),
+    gutil = require('gulp-util'),
     runSequence = require('run-sequence');
 
 var jsSources = ['./components/js/*.js']; //may need to dictate specific concatenation order
@@ -41,11 +45,13 @@ gulp.task('js', function() {
             presets: ['es2015']
         }))
 	.pipe(concat('scripts.js'))
+  .pipe(sourcemaps.init({loadMaps: true}))
   .pipe(jshint())
   .pipe(jshint.reporter('default'))
   .pipe(browserify({
           insertGlobals : true
         }))
+  .pipe(sourcemaps.write('./'))
 	.pipe(gulp.dest('./builds/dev/js'))
 });
 
@@ -62,7 +68,7 @@ gulp.task('jsDist', function () {
         .pipe(gulp.dest('builds/dist/js'))
 });
 
-gulp.task('sass', function (cb) {
+gulp.task('sass', function () {
   return gulp.src(sassSources)
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer({
