@@ -138,11 +138,11 @@ body {
         }
     }
     .close-instructions {
-        top: -100vh;
+        top: -110vh;
     }
     .you-win,
     .your-name {
-        top: -100vh;
+        top: -110vh;
         @include overlay;
         div {
             color: $color1;

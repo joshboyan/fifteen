@@ -145,13 +145,14 @@
                 document.getElementById('youWin').classList.add('open');
                 document.getElementById('name').autofocus = true;
                 // Script to autofocus cursor in browsers without native support;
-                if (!("autofocus" in document.createElement("input"))) {
-                    document.getElementById("name").focus();
+                if (!('autofocus' in document.createElement('input'))) {
+                    document.getElementById('name').focus();
                 }
             }
             // Increment the counts
             winCount++;
         }
+        
         function winSequence() {
             // Set the details of the game
             let gameStats = {
@@ -299,7 +300,7 @@
                 //Find how much time has elasped between ow and starting time
                 time = new Date().getTime() - start;
                 // Set the timer interval to 1000ms === 1s
-                seconds = Math.floor(time / 1000);
+                seconds = Math.round((time / 1000) + .5) ;
                 // Ensure seconds always appear in 2 digit format
                 if (seconds > 9) {
                     timer.innerHTML = `${minutes}:${seconds}`;
@@ -422,6 +423,9 @@
             winSequence();
         });
 
+/*END
+//
+//*/
 
     }, { "idb": 2 }],
     2: [function(require, module, exports) {
