@@ -1,6 +1,4 @@
 /*jshint esversion: 6,  browser: true, devel: true, strict: true*/
-(function() {
-    'use strict';
     var idb = require('idb');
     var gameField = [];
     var compareArr = [
@@ -403,4 +401,3 @@
         name = document.getElementsByTagName('input')[0].value;
         winSequence();
     });
-})();
