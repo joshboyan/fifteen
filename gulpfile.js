@@ -14,9 +14,7 @@ var gulp = require('gulp'),
     browserify = require('gulp-browserify'),
     source = require('vinyl-source-stream'),
     buffer = require('vinyl-buffer'),
-    sourcemaps = require('gulp-sourcemaps'),
-    gutil = require('gulp-util'),
-    runSequence = require('run-sequence');
+    sourcemaps = require('gulp-sourcemaps');
 
 var jsSources = ['./components/js/*.js']; //may need to dictate specific concatenation order
 var sassSources = ['./components/sass/*.scss'];
@@ -91,6 +89,7 @@ gulp.task('imgminDist', function() {
         .pipe(imgmin())
         .pipe(gulp.dest('./builds/dist/img'));
 });
+
 gulp.task('panini', function() {
     return gulp.src('./components/pages/**/*.html')
         .pipe(panini({
