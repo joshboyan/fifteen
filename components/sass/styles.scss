@@ -131,6 +131,7 @@ body {
         }
         img {
             width: 60%;
+            max-width: 200px;
             margin: 1rem 20% 0 20%;
         }
         button {
@@ -139,6 +140,7 @@ body {
     }
     .close-instructions {
         top: -110vh;
+        display: none;
     }
     .you-win,
     .your-name {
