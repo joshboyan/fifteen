@@ -77,8 +77,10 @@ body {
             margin-top: 30px;
             width: 80%;
             width: 80vw;
+            max-width: 300px;
             height: 80vw;
-            padding: 4vw 7vw 7vw 4vw;
+            max-height: 300px;
+            padding: 20px 30px 30px 20px;
             background-color: $color4;
             border-radius: 10px;
             box-shadow: 2px 4px 18px $color2;
@@ -124,17 +126,16 @@ body {
         top: 0;
         @include overlay;
         //#instructions
-        p {
-            width: 80%;
-            margin-left: 10%;
-            font: 1.5rem/1 $font1;
+        figure {
+            margin: 1em auto;
+            max-width: 300px;
         }
         img {
             width: 60%;
-            max-width: 200px;
             margin: 1rem 20% 0 20%;
         }
         button {
+            max-width: 200px;
             @include button;
         }
     }
@@ -184,6 +185,7 @@ body {
         }
         h2 {
             font-size: 2.25rem;
+            clear: both;
         }
         div div {
             width: 90%;
@@ -219,6 +221,7 @@ body {
             width: 95%;
             margin: .5rem 2.5%;
             font-size: 1.1rem;
+            clear: both;
         }
         form {
             text-align: left;
@@ -257,10 +260,13 @@ body {
 }
 
 //tablet styles
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 500px) {
     html {}
     body {
         header {
+            span:nth-of-type(2) {
+                left: -10%;
+            }
             nav {}
         }
         main {}
@@ -273,6 +279,9 @@ body {
     html {}
     body {
         header {
+            span:nth-of-type(2) {
+                left: -5%;
+            }
             nav {}
         }
         main {}
