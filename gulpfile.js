@@ -122,7 +122,7 @@ gulp.task('sitemap', function() {
             read: false
         })
         .pipe(sitemap({
-            siteUrl: 'https://github.com/joshboyan/minimal-framework.git'
+            siteUrl: 'https://joshboyan.com/fifteen/'
         }))
         .pipe(gulp.dest('./builds/dist'));
 });
