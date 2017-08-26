@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!--this is the head, header, nav and footer that will be compiled to any page that you call layout:default in the top Front Matter markdown-->
+<html lang="en" prefix="og: http://ogp.me/ns#">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!--Double curly braces load data from the top of pages -->
+	<meta description=>
+	<meta property="og:title" content= />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content= />
+	<meta property="og:image" content= />
+	<meta property="og:description" content= />
+	<title></title>
+
+	<link rel="icon" type="image/png" href="img/favicon.png">
+	<link rel="icon" type="image/ico" href="img/logo.ico">
+	<link type="text/plain" rel="author" href="humans.txt" />
+	<link href="css/styles.css" rel="stylesheet">
+	<!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+	
+	<!--header closes on each page for unique hero images etc-->
+	<!--body tag injects unique pages from pages directory-->
+<header role="banner">
+    <span id="instructionsTrigger">Fifteen</span>
+    <span>puzzle</span>
+    <img id="refresh" src="img/refresh.png" alt="Refresh game">
+</header>
+<main role="main">
+    <div class="wrapper">
+        <div id="container"></div>
+    </div>
+    <div id="gameStats" class="game-stats">
+        <p id="counter">Moves:0</p>
+        <p id="timer">0:00</p>
+    </div>
+</main>
+<footer role="navigation">
+    <img id="timeScores" src="img/time.png" alt="View Best Time Leaderboard">
+    <img id="info" src="img/info.png" alt="Info">
+    <img id="moveScores" src="img/trophy.png" alt="Best Least Move Leaderboard">
+</footer>
+<aside id="instructions" class="instructions" role="complementary">
+    <p>Arrange game pieces into ascending order.</p>
+    <figure>
+        <img src="img/starting.png" alt="Starting Game Board">
+        <figcation>Starting Game Board</figcation>
+    </figure>
+    <figure>
+        <img src="img/finished.png" alt="Finished Game Board">
+        <figcation>Finished Game Board</figcation>
+    </figure>
+    <button id="closeInstructions">Got It!!</button>
+</aside>
+<aside id="youWin" class="you-win" role="complementary">
+    <div>You Win!!</div>
+    <button id="exitYouWin">OK</button>
+</aside>
+<aside id="yourName" class="your-name" role="complementary">
+    <form action="GET">
+        <label for="name">Enter Your Initials</label>
+        <input name="name" id="name" type="text" placeholder="MLB" maxlength="3" autofocus required>
+        <input id="exitYourName" type="button" value="Done">
+    </form>
+    </aside>
+    <aside id="timeScoreBoard" class="time-score-board" role="complementary">
+    <img src="img/x-mark.png" alt="exit button" id='exitTimes'>
+        <img src="img/x-mark.png" alt="exit button" id='exitTimesWin'>
+        <h2>Fastest Times</h2>
+        <div id="timeEntries"></div>
+    </aside>
+    <aside id="movesScoreBoard" class="moves-score-board" role="complementary">
+    <img src="img/x-mark.png" alt="exit button" id='exitMoves'>
+        <img src="img/x-mark.png" alt="exit button" id='exitMovesWin'>
+        <h2>Least Moves</h2>
+        <div id="moveEntries"></div>
+    </aside>
+    <aside id="infoBoard" class="info" role="complementary">
+    <img src="img/x-mark.png" alt="exit button" id='exitInfo'>
+    <p>This game is a progressive web app built with love in Portland, OR. If you want to learn more, collaborate or need an app or website built; give me a holla with the form. Or Chek out my portfolio by following the links below.<br> Or hire someone not as good.<br> Whatever ;)</p>
+        <form action="GET">
+            <label for="name">Name*</label>
+            <input name="name" type="text"required>
+            <label for="email">Email*</label>
+            <input name="email" type="text" required>
+            <label for="select">What's Up?*</label>
+            <select name="select" required>
+                <option value="volvo">Build Me a Site!</option>
+                <option value="saab">Build Me an App!</option>
+                <option value="opel">I Need a Redesign!</option>
+                <option value="audi">Hi Buddy!</option>
+            </select>
+            <input type="reset">
+            <input type="submit">
+        </form>
+        <span><a href="https://joshboyan.com">&copy;JoshBoyan2017&ndash;All Rights Reserved</a></span>
+    </aside>
+
+
+	
+	<script src="js/scripts.js"></script>
+</body>
+</html>
