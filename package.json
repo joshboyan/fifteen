@@ -48,7 +48,6 @@
   },
   "scripts": {
     "test": "n/a",
-    "start": "node ./server.js",
-    "heroku-postbuild": "gulp dist"
+    "start": "node ./server.js"
   }
 }

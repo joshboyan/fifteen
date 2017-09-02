@@ -9,11 +9,11 @@ var router = express.Router();
 //Set up port variable
 var port = process.env.PORT || 3899;
 
-app.use(express.static(path.join(__dirname + '/builds/dist/')));
+app.use(express.static(__dirname));
 
 // Test route
 app.get('/', function(req,res){
-  res.sendFile(path.join(__dirname + '/builds/dist/index.html'));
+  res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 app.listen(port,
