@@ -1,0 +1,29 @@
+{
+  "name": "fifteen-heroku",
+  "version": "1.0.0",
+  "description": "heroku distibution of fifteen app",
+  "main": "index.html",
+  "scripts": {
+    "test": "n/a",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshboyan/fifteen.git"
+  },
+  "keywords": [
+    "heroku",
+    "javascript",
+    "mongo"
+  ],
+  "author": "joshboyan.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joshboyan/fifteen/issues"
+  },
+  "homepage": "https://github.com/joshboyan/fifteen#readme",
+  "dependencies": {
+    "express": "^4.15.4",
+    "idb": "^2.0.3"
+  }
+}
