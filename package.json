@@ -45,5 +45,9 @@
   "dependencies": {
     "express": "^4.15.3",
     "idb": "^2.0.0"
+  },
+  "scripts": {
+    "test": "n/a",
+    "start": "node ./server.js"
   }
 }

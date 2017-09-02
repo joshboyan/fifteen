@@ -1,16 +1,19 @@
 // Set up express instance
 var express = require('express');
+var path = require('path');
 var app = express();
 
 // Get a router instance
 var router = express.Router();
 
 //Set up port variable
-var port = process.env.PORT || 5000;
+var port = process.env.PORT || 3899;
+
+app.use(express.static(path.join(__dirname + '/builds/dist/')));
 
 // Test route
 app.get('/', function(req,res){
-  res.send('API is kicking!');
+  res.sendFile(path.join(__dirname + '/builds/dist/index.html'));
 });
 
 app.listen(port,
