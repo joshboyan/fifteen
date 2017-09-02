@@ -44,7 +44,8 @@
   },
   "dependencies": {
     "express": "^4.15.3",
-    "idb": "^2.0.0"
+    "idb": "^2.0.0",
+    "mongoose": "^4.11.9"
   },
   "scripts": {
     "test": "n/a",
