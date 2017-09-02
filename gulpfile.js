@@ -14,7 +14,8 @@ var gulp = require('gulp'),
     browserify = require('gulp-browserify'),
     source = require('vinyl-source-stream'),
     buffer = require('vinyl-buffer'),
-    sourcemaps = require('gulp-sourcemaps');
+    sourcemaps = require('gulp-sourcemaps'),
+    child_process = require('child_process');
 
 var jsSources = ['./components/js/*.js']; //may need to dictate specific concatenation order
 var sassSources = ['./components/sass/*.scss'];
@@ -90,6 +91,24 @@ gulp.task('imgminDist', function() {
         .pipe(gulp.dest('./builds/dist/img'));
 });
 
+gulp.task('server', function(){
+    return gulp.src('./components/server.js')
+    .pipe(gulp.dest('./builds/dev'));
+});
+
+gulp.task('serverDist', function(){
+    return gulp.src('./components/server.js')
+    .pipe(gulp.dest('./builds/dist'));
+});
+
+gulp.task('startServer', function (cb) {
+  child_process.exec('nodemon ./components/server.js', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
+})
+
 gulp.task('panini', function() {
     return gulp.src('./components/pages/**/*.html')
         .pipe(panini({
@@ -128,12 +147,13 @@ gulp.task('sitemap', function() {
 });
 
 gulp.task('watch', function(done) {
+    gulp.watch(['./components/server.js'], ['server']).on('change', browserSync.reload);
     gulp.watch(jsSources, ['js']).on('change', browserSync.reload);
     gulp.watch(sassSources, ['sass']).on('change', browserSync.reload);
     gulp.watch(htmlSources, ['panini']).on('change', browserSync.reload);
     gulp.watch(['./components/{layouts,partials,helpers,data}/**/*'], [panini.refresh]);
 });
 
-gulp.task('default', ['js', 'sass', 'panini', 'browser-sync', 'imgmin', 'watch']);
+gulp.task('default', ['js', 'sass', 'panini', 'browser-sync', 'imgmin', 'server', 'startServer', 'watch']);
 
-gulp.task('dist', ['sassDist', 'jsDist', 'paniniDist', 'imgminDist', 'sitemap']);
+gulp.task('dist', ['sassDist', 'jsDist', 'paniniDist', 'imgminDist', 'serverDist', 'sitemap']);
