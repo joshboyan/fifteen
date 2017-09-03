@@ -75,7 +75,8 @@ router.route('/scores')
       if(err){
         res.send(err);
       } else {
-        res.json({message:"Score added!"});
+        res.json({message:"Score added!",
+                  score: score});
       }
     });
   })

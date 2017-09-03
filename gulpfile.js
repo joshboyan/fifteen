@@ -91,11 +91,6 @@ gulp.task('imgminDist', function() {
         .pipe(gulp.dest('./builds/dist/img'));
 });
 
-gulp.task('server', function(){
-    return gulp.src('./server.js')
-    .pipe(gulp.dest('./builds/dev'));
-});
-
 gulp.task('startServer', function (cb) {
   child_process.exec('nodemon ./server.js', function (err, stdout, stderr) {
     console.log(stdout);
@@ -142,13 +137,13 @@ gulp.task('sitemap', function() {
 });
 
 gulp.task('watch', function(done) {
-    gulp.watch(['./server.js'], ['server']).on('change', browserSync.reload);
+    gulp.watch(['./server.js']).on('change', browserSync.reload);
     gulp.watch(jsSources, ['js']).on('change', browserSync.reload);
     gulp.watch(sassSources, ['sass']).on('change', browserSync.reload);
     gulp.watch(htmlSources, ['panini']).on('change', browserSync.reload);
     gulp.watch(['./components/{layouts,partials,helpers,data}/**/*'], [panini.refresh]);
 });
 
-gulp.task('default', ['js', 'sass', 'panini', 'browser-sync', 'imgmin', 'server', 'startServer', 'watch']);
+gulp.task('default', ['js', 'sass', 'panini', 'browser-sync', 'imgmin', 'startServer', 'watch']);
 
 gulp.task('dist', ['sassDist', 'jsDist', 'paniniDist', 'imgminDist', 'sitemap']);
