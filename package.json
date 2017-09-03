@@ -43,6 +43,7 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
+    "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "idb": "^2.0.0",
     "mongoose": "^4.11.9"
