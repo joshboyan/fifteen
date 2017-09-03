@@ -55,7 +55,8 @@ document.getElementById('exitYouWin').addEventListener('click', function() {
     document.getElementById('yourName').classList.add('open');
 });
 
-document.getElementById('exitYourName').addEventListener('click', function() {
+document.getElementById('exitYourName').addEventListener('click', function(e) {
+    e.preventDefault();
     document.getElementById('yourName').classList.remove('open');
     name = document.getElementsByTagName('input')[0].value;
     winSequence();
