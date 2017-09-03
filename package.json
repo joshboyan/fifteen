@@ -51,8 +51,6 @@
   },
   "scripts": {
     "test": "n/a",
-    "start": "node ./server.js",
-    "heroku-postbuild": "gulp dist"
-  },
-  "proxy": "http://localhost:3899"
+    "start": "node ./server.js"
+  }
 }

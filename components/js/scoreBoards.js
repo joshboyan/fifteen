@@ -10,14 +10,18 @@ function buildScoreBoard(type, board) {
 		fetch('/api/scores').then(rankings => {
 			// Parse the repsonse into JSON
 			return rankings.json();
-		}).then(rankings => {
+		}).then(rankings => {		
+			//Sort in ascending order by the type of board being built
+			rankings.sort(function(a, b){
+				return a[type] -b[type];
+			});
 			// Create the board in the DOM
 			populateScoreBoard(rankings);
 		}).catch(error => {
 			console.error(error);
 		});
 	} catch(err) {
-		// Open up the database
+		// Open indexedDB
 		dbPromise.then(db => {
 			// Create a transaction
 			let tx = db.transaction('scores');
@@ -26,7 +30,6 @@ function buildScoreBoard(type, board) {
 			// Specify the index to use
 			let myIndex = store.index(type);
 			// Get all the entries ordered by the index
-
 			return myIndex.getAll();
 		}).then(rankings => {
 			// Create the board in the DOM

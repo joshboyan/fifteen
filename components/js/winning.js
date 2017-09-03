@@ -46,12 +46,31 @@ function winSequence() {
     document.getElementById('counter').innerHTML = 'Moves:0';
     
 
-    // Add the info from this game to the DB
-    dbPromise.then(db => {
-        tx = db.transaction('scores', 'readwrite');
-        scores = tx.objectStore('scores', 'readwrite');
-        scores.add(gameStats, `key${entryCount}`);
-    }).catch(err => console.log(err));
+// Add the info from this game to the DB
+    fetch('/api/scores', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(gameStats)
+    }).then(() =>{
+        console.log("The following entry has been made to mongo: ", gameStats);
+    }).catch(err => {
+        // If user is offline add the scores to indexed db
+        console.error("There was a connection problem, Score is being stored locally", err);
+        dbPromise.then(db => {
+            // This updates the scores for the in-browser scoreboards
+            // while the user is offline
+            tx = db.transaction('scores', 'readwrite');
+            scores = tx.objectStore('scores', 'readwrite');
+            scores.add(gameStats, `key${entryCount}`);
+            // This stores the scores for upload to mongo when the
+            // user has a connection
+            tx = db.transaction('offline', 'readwrite');
+            scores = tx.objectStore('offline', 'readwrite');
+            scores.add(gameStats, `key${entryCount}`);
+        }).catch(err => console.error(err)); 
+    });  
     // Increment the counter for the idb key
     entryCount++;
     // Set timeScoreBoard "x" to open movesScoreBoard
@@ -61,5 +80,5 @@ function winSequence() {
     document.getElementById('exitMoves').style.display = 'none';
     document.getElementById('exitMovesWin').style.display = 'block';
     openTimeScoreBoard();
-
+    
 }

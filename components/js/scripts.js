@@ -1,5 +1,5 @@
 /*jshint esversion: 6,  browser: true, devel: true, strict: true*/
-var fetch = require('whatwg-fetch');
+require('whatwg-fetch');
 var idb = require('idb');
 var gameField = [];
 var compareArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, null];
@@ -12,6 +12,7 @@ var time;
 var tx;
 var scores;
 var entryCount;
+var addOfflineScores = false;
 
 // Open an indexedDB database
 var dbPromise = idb.open('scores', 1, upgradeDB => {
@@ -20,12 +21,38 @@ var dbPromise = idb.open('scores', 1, upgradeDB => {
     // Create keys to query database
     scores.createIndex('timer', 'timer');
     scores.createIndex('moves', 'moves');
+    // Create store to hold scores from offline use
+    let offline = upgradeDB.createObjectStore('offline');
 }).catch(error => {
     console.error(error);
 });
 
+if(addOfflineScores){
+    dbPromise.then(db => {
+        // Create a transaction
+        let tx = db.transaction('offline');
+        // open up the object store
+        let store = tx.objectStore('offline');
+        // Specify the index to use
+        let myIndex = store.index(type);
+        // Get all the entries ordered by the index
+        return myIndex.getAll();
+    }).then(offline => {
+        fetch('/api/scores', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(offline)
+        })
+            console.log("The following entry has been made to mongo: ", offline);
+    }).catch(err => {
+        console.error("There was an error updating mongo with offline scores. ", err)
+    }); 
+}
 
-// Access the database
+
+// Get the number of score entries for internal use
 dbPromise.then(db => {
     // Create a new transaction
     tx = db.transaction('scores', 'readwrite');
@@ -38,10 +65,10 @@ dbPromise.then(db => {
     console.error(error);
 });
 
-// Hide URL paramenter if user hits enter after inputting initials
+/* Hide URL paramenter if user hits enter after inputting initials
 if(typeof window.history.pushState == 'function') {
     window.history.pushState({}, "Hide", "https://fifteen-puzzle.herokuapp.com");
-}
+}*/
 
 // Start/Restart the game
 function refresh() {
@@ -56,5 +83,6 @@ function refresh() {
     document.getElementById('exitMovesWin').style.display = 'none';
     document.getElementById('exitMoves').style.display = 'block';
 }
-refresh();
 
+// Start the initial game
+refresh();
