@@ -58,18 +58,20 @@ function winSequence() {
     }).catch(err => {
         // If user is offline add the scores to indexed db
         console.error("There was a connection problem, Score is being stored locally", err);
-        dbPromise.then(db => {
+        idb.open('scores', 1).then(db => {
             // This updates the scores for the in-browser scoreboards
             // while the user is offline
-            tx = db.transaction('scores', 'readwrite');
+            let tx = db.transaction('scores', 'readwrite');
             scores = tx.objectStore('scores', 'readwrite');
-            scores.add(gameStats, `key${entryCount}`);
+            scores.add(gameStats);
             // This stores the scores for upload to mongo when the
             // user has a connection
-            tx = db.transaction('offline', 'readwrite');
-            scores = tx.objectStore('offline', 'readwrite');
-            scores.add(gameStats, `key${entryCount}`);
         }).catch(err => console.error(err)); 
+        idb.open('offline', 1).then(db => {
+            let tx = db.transaction('offline', 'readwrite');
+            offline = tx.objectStore('offline', 'readwrite');
+            offline.add(gameStats);
+        }).catch(err => console.error(err));
     });  
     // Increment the counter for the idb key
     entryCount++;
