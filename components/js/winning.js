@@ -55,18 +55,20 @@ function winSequence() {
         body: JSON.stringify(gameStats)
     }).then(() =>{
         console.log("The following entry has been made to mongo: ", gameStats);
-    }).catch(err => {
-        // If user is offline add the scores to indexed db
-        console.error("There was a connection problem, Score is being stored locally", err);
-        idb.open('scores', 1).then(db => {
+         idb.open('scores', 1).then(db => {
             // This updates the scores for the in-browser scoreboards
             // while the user is offline
             let tx = db.transaction('scores', 'readwrite');
             scores = tx.objectStore('scores', 'readwrite');
-            scores.add(gameStats);
+            scores.add(gameStats);            
+        }).then(() => {
+            console.log("The following entry has been made to indexedDB: ", gameStats);
+        }).catch(err => console.error(err));
+    }).catch(err => {
+        // If user is offline add the scores to indexed db
+        console.error("There was a connection problem, Score is being stored locally", err);
             // This stores the scores for upload to mongo when the
-            // user has a connection
-        }).catch(err => console.error(err)); 
+            // user has a connection 
         idb.open('offline', 1).then(db => {
             let tx = db.transaction('offline', 'readwrite');
             offline = tx.objectStore('offline', 'readwrite');

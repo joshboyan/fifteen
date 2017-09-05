@@ -5,7 +5,7 @@
 */
 
 function buildScoreBoard(type, board) {
-  // First try mongoDB
+  		// First try mongoDB
 		fetch('/api/scores').then(rankings => {
 			// Parse the repsonse into JSON
 			return rankings.json();
@@ -56,14 +56,4 @@ function buildScoreBoard(type, board) {
             board.appendChild(node);
         });
     }
-} // End buildScoreBoard
-
-function openTimeScoreBoard() {
-    buildScoreBoard('timer', 'timeEntries');
-    document.getElementById('timeScoreBoard').classList.add('open');
-}
-
-function openMovesScoreBoard() {
-    buildScoreBoard('moves', 'moveEntries');
-    document.getElementById('movesScoreBoard').classList.add('open');
 }

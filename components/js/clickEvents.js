@@ -15,8 +15,8 @@ document.getElementById('refresh').addEventListener('click', function() {
 });
 
 document.getElementById('timeScores').addEventListener('click', function() {
-    openTimeScoreBoard();
-
+    buildScoreBoard('timer', 'timeEntries');
+    document.getElementById('timeScoreBoard').classList.add('open');
 });
 
 document.getElementById('exitTimes').addEventListener('click', function() {
@@ -25,12 +25,13 @@ document.getElementById('exitTimes').addEventListener('click', function() {
 
 document.getElementById('exitTimesWin').addEventListener('click', function() {
     document.getElementById('timeScoreBoard').classList.remove('open');
-    openMovesScoreBoard();
+    buildScoreBoard('moves', 'moveEntries');
+    document.getElementById('movesScoreBoard').classList.add('open');
 });
 
 document.getElementById('moveScores').addEventListener('click', function() {
-    openMovesScoreBoard();
-
+    buildScoreBoard('moves', 'moveEntries');
+    document.getElementById('movesScoreBoard').classList.add('open');
 });
 
 document.getElementById('exitMoves').addEventListener('click', function() {
