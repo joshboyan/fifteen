@@ -31,7 +31,10 @@ this.addEventListener('install', function(event) {
 });
 
 this.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.match(event.request)    
-  );
+  var contentType = response.headers.get("content-type");
+    if(contentType && !contentType.includes("application/json")) {
+      event.respondWith(
+        caches.match(event.request)    
+      );
+    }
 });

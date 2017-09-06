@@ -18,13 +18,7 @@ function indexedDB(){
   var dbPromiseOffline = idb.open('offline', 1, upgradeDB => {
       // Create object store in the database
       let offline = upgradeDB.createObjectStore('offline', { autoIncrement : true });
-  }).catch(err => {
-      console.error(err);
-  });
-
-  // Add scores form offline play to mongo
-  
-      dbPromiseOffline.then(db => {
+  }).then(db => {
           // Create a transaction
           let tx = db.transaction('offline');
           // Open up the object store
@@ -44,9 +38,11 @@ function indexedDB(){
           });
       }).then(() => {
           // Empty the offline object store
-          dbPromiseOffline.then(db => {
-              db.transaction('offline', 'readwrite').objectStore('offline', 'readwrite').clear();
-          }).catch(err => console.error(err));
+          idb.open('offline', 1).then(db => {
+                let tx = db.transaction('offline', 'readwrite');
+                let offline = tx.objectStore('offline', 'readwrite');
+                offline.clear();
+          });
       }).catch(err => {
           console.error("There was an error updating mongo with offline scores. ", err)
       }); 
@@ -54,9 +50,9 @@ function indexedDB(){
   // (Don't think I need this anymore)Get the number of score entries for internal use
   dbPromise.then(db => {
       // Create a new transaction
-      tx = db.transaction('scores', 'readwrite');
+      let tx = db.transaction('scores', 'readwrite');
       // Select the object store to work with
-      scores = tx.objectStore('scores', 'readwrite');
+      let scores = tx.objectStore('scores', 'readwrite');
       //Get the number of entries n the objectStore
       entryCount = scores.count();
       return entryCount;

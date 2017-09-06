@@ -51,30 +51,31 @@ function winSequence() {
     // This updates the scores for the in-browser scoreboards
     // while the user is offline
     let tx = db.transaction('scores', 'readwrite');
-    scores = tx.objectStore('scores', 'readwrite');
+    let scores = tx.objectStore('scores', 'readwrite');
     scores.add(gameStats);    
     }).then(() =>{
         console.log("The following entry has been made to indexedDB: ", gameStats);
-        fetch('/api/scores', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(gameStats)           
-        }).then(() => {
-            console.log("The following entry has been made to mongoDB: ", gameStats);
-        }).catch(err => console.error(err));
-    }).catch(err => {
-        // If user is offline add the scores to indexed db
-        console.error("There was a connection problem, Score is being stored locally", err);
-            // This stores the scores for upload to mongo when the
-            // user has a connection 
-        idb.open('offline', 1).then(db => {
-            let tx = db.transaction('offline', 'readwrite');
-            offline = tx.objectStore('offline', 'readwrite');
-            offline.add(gameStats);
-        }).catch(err => console.error(err));
-    });  
+        if(window.navigator.onLine){
+            fetch('/api/scores', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(gameStats)
+            }).then(() => {
+                console.log("The following entry has been made to mongoDB: ", gameStats);
+            }).catch( err => {console.log(err)});
+        } else {
+            idb.open('offline', 1).then(db => {
+                let tx = db.transaction('offline', 'readwrite');
+                let offline = tx.objectStore('offline', 'readwrite');
+                offline.add(gameStats);
+            }).then(() => {
+                console.log("the following entry has bee added to indexedDB.offline", gameStats)
+            }).catch(err => {console.error(err)});
+        }
+    }).catch(err => {console.error(err);});               
+            
     // Increment the counter for the idb key
     entryCount++;
     // Set timeScoreBoard "x" to open movesScoreBoard

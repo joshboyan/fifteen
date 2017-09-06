@@ -9,11 +9,8 @@ var seconds = 0;
 var minutes = 0;
 var name;
 var time;
-var tx;
 var scores;
-var offline;
 var entryCount;
-var addOfflineScores = false;
 
 /*/ Hide URL paramenter if user hits enter after inputting initials
 if(typeof window.history.pushState == 'function') {
