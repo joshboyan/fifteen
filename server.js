@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var app = express();
 var bodyParser = require('body-parser');
+var nodemailer = require('nodemailer');
 
 
 // configure app to use bodyParser() to get the data from a POST
@@ -57,8 +58,7 @@ router.get('/', function(req,res){
   res.sendFile(path.join(__dirname + '/builds/dist/index.html'));
 });
 
-var nodemailer = require('nodemailer');
-
+// Set up email transporter instance
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -67,6 +67,7 @@ var transporter = nodemailer.createTransport({
   }
 });
 
+// Set up email route 
 app.post('/email', function(req, res) {
   
   res.sendFile(path.join(__dirname + '/builds/dist/index.html'));
