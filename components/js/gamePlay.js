@@ -22,6 +22,7 @@ function appendEvent() {
                 // Remove the game piece value from targetId
                 gameField[targetId] = null;
                 console.log(entryCount);
+                ga('send', 'event', 'game play', 'click');
                 // Render game board with new positions
                 buildGameBoard();
                 // Winning condition check if pieces are in numerical order
