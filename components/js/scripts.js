@@ -12,11 +12,11 @@ var time;
 var scores;
 var entryCount;
 
-/*/ Hide URL paramenter if user hits enter after inputting initials
+// Hide URL paramenter if user hits enter after inputting initials
 if(typeof window.history.pushState == 'function') {
     window.history.pushState({}, "Hide", "https://fifteen-puzzle.herokuapp.com");
 }
-*/
+
 // Start/Restart the game
 function refresh() {
     randomBoard();
