@@ -6,11 +6,12 @@
 function randomBoard() {
     //Ensure game board array is cleared
     
-    //Set game board up 1 move from winning to check win sequence
+    /*/Set game board up 1 move from winning to check win sequence for testing
     gameField = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, null, 15]; //Change this back to 1-15
-    
+    */
+
     //Game piece values for new game
-    /*gameField = [];
+    gameField = [];
     let startArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     while (startArr.length > 0) {
         //Set picked to a random number from 0 - 14
@@ -20,7 +21,7 @@ function randomBoard() {
         gameField.push(startArr.splice(startArr.indexOf(picked), 1));
     }
     //Set the final space to be blank with null spaceholder
-    gameField.push(null);*/
+    gameField.push(null);
     //Run check to see if the game cannot be won
     if (!boardCheck()) {
         //Call the function recursively if the game cannot be won
