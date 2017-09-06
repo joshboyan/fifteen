@@ -31,10 +31,8 @@ this.addEventListener('install', function(event) {
 });
 
 this.addEventListener('fetch', function(event) {
-  var contentType = response.headers.get("content-type");
-    if(contentType && !contentType.includes("application/json")) {
-      event.respondWith(
-        caches.match(event.request)    
-      );
-    }
+  if(event.request.url.indexOf('api/scores') === -1){
+  event.respondWith(
+    caches.match(event.request)      
+  );}
 });
