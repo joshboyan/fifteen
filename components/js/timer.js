@@ -19,7 +19,7 @@ function gameTimer() {
     minutes = 0;
     // Get initial time value
     let start = new Date().getTime();
-    window.setInterval(function() {
+    window.setInterval(() => {
         //Find how much time has elasped between ow and starting time
         time = new Date().getTime() - start;
         // Set the timer interval to 1000ms === 1s

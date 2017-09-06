@@ -11,15 +11,15 @@ function indexedDB(){
       // Create keys to query database
       scores.createIndex('timer', 'timer');
       scores.createIndex('moves', 'moves');
-  }).catch(error => {
-      console.error(error);
+  }).catch(err => {
+      console.error(err);
   });
 
   var dbPromiseOffline = idb.open('offline', 1, upgradeDB => {
       // Create object store in the database
       let offline = upgradeDB.createObjectStore('offline', { autoIncrement : true });
-  }).catch(error => {
-      console.error(error);
+  }).catch(err => {
+      console.error(err);
   });
 
   // Add scores form offline play to mongo
@@ -60,8 +60,8 @@ function indexedDB(){
       //Get the number of entries n the objectStore
       entryCount = scores.count();
       return entryCount;
-  }).catch(error => {
-      console.error(error);
+  }).catch(err => {
+      console.error(err);
   });
 }
 
@@ -89,7 +89,7 @@ function mongo(){
             });
             console.log('Repopulating indexedDB with scores');
         });        
-    }).catch(error => {
-        console.log("There was a problem communicating with the database", error);
+    }).catch(err => {
+        console.error("There was a problem communicating with the database", err);
     });
 }

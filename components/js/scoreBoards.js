@@ -18,8 +18,8 @@ function buildScoreBoard(type, board) {
 	}).then(rankings => {
 		// Create the board in the DOM
 		populateScoreBoard(rankings);
-	}).catch(error => {
-		console.error(error);
+	}).catch(err => {
+		console.error(err);
 	});
   	// Create the board in the DOM
     function populateScoreBoard(rankings){
@@ -29,7 +29,7 @@ function buildScoreBoard(type, board) {
             board.removeChild(board.lastChild);
         }
         // Format each database key into an html entry for the score boards
-        rankings.forEach(function(rank, index) {
+        rankings.forEach((rank, index) => {
             let node = document.createElement('div');
             //console.log(rank.key);
             //console.log(entryCount);
