@@ -38,3 +38,5 @@ function refresh() {
 refresh();
 // Initialize data stores in browser
 indexedDB();
+// Get scores from mongoDB
+mongo();

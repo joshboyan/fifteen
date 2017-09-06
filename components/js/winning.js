@@ -47,22 +47,22 @@ function winSequence() {
     
 
 // Add the info from this game to the DB
-    fetch('/api/scores', {
+ idb.open('scores', 1).then(db => {
+    // This updates the scores for the in-browser scoreboards
+    // while the user is offline
+    let tx = db.transaction('scores', 'readwrite');
+    scores = tx.objectStore('scores', 'readwrite');
+    scores.add(gameStats);    
+    }).then(() =>{
+        console.log("The following entry has been made to indexedDB: ", gameStats);
+        fetch('/api/scores', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(gameStats)
-    }).then(() =>{
-        console.log("The following entry has been made to mongo: ", gameStats);
-         idb.open('scores', 1).then(db => {
-            // This updates the scores for the in-browser scoreboards
-            // while the user is offline
-            let tx = db.transaction('scores', 'readwrite');
-            scores = tx.objectStore('scores', 'readwrite');
-            scores.add(gameStats);            
+        body: JSON.stringify(gameStats)           
         }).then(() => {
-            console.log("The following entry has been made to indexedDB: ", gameStats);
+            console.log("The following entry has been made to mongoDB: ", gameStats);
         }).catch(err => console.error(err));
     }).catch(err => {
         // If user is offline add the scores to indexed db
@@ -83,6 +83,8 @@ function winSequence() {
     // Set movesScoreBoard "x" to restart the game
     document.getElementById('exitMoves').style.display = 'none';
     document.getElementById('exitMovesWin').style.display = 'block';
-    openTimeScoreBoard();
+    // Open time score board
+    buildScoreBoard('timer', 'timeEntries');
+    document.getElementById('timeScoreBoard').classList.add('open');
     
 }
