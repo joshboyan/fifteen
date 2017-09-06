@@ -47,6 +47,7 @@
     "express": "^4.15.3",
     "idb": "^2.0.0",
     "mongoose": "^4.11.9",
+    "nodemailer": "^4.1.0",
     "whatwg-fetch": "^2.0.3"
   },
   "scripts": {

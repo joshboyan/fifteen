@@ -4,6 +4,7 @@ var path = require('path');
 var app = express();
 var bodyParser = require('body-parser');
 
+
 // configure app to use bodyParser() to get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -56,7 +57,38 @@ router.get('/', function(req,res){
   res.sendFile(path.join(__dirname + '/builds/dist/index.html'));
 });
 
-// Register routes
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'boyanjosh@gmail.com',
+    pass: '24045Hss!'
+  }
+});
+
+app.post('/email', function(req, res) {
+  
+  res.sendFile(path.join(__dirname + '/builds/dist/index.html'));
+  console.log(req.body.select);
+    var message = {
+        from: 'boyanjosh@gmail.com',
+        to: 'boyanjosh@gmail.com',
+        subject: 'Message from Fifteen Puzzle',
+        html: '<p>' + req.body.name + '</p>' +
+              '<p>' + req.body.email + '</p>' +
+              '<p>' + req.body.select + '</p>'           
+    };
+    // Send the mail
+    transporter.sendMail(message, function(err, info){
+        if(err){
+            return console.log(err);
+        }
+        console.log('Message sent: ' + info.response);
+    });
+});
+
+// Register API routes
 app.use('/api', router);
 
 // All routes that end in /scores

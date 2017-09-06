@@ -61,24 +61,23 @@ description: "Classic number sorting puzzle game."
         <h2>Least Moves</h2>
         <div id="moveEntries"></div>
     </aside>
-    <!-- //removed after switchig to node backend. Don't really need form-->
-        <aside id="infoBoard" class="info" role="complementary">
-    <img src="img/x-mark.png" alt="exit button" id='exitInfo'>
-    <p>This game is a progressive web app built with love in Portland, OR. If you want to learn more, collaborate or need an app or website built; give me a holla. Or Chek out my portfolio by following the links below.<br> Or hire someone not as good.<br> Whatever ;)</p>
-        <form action="GET">
+    <aside id="infoBoard" class="info" role="complementary">
+        <img src="img/x-mark.png" alt="exit button" id='exitInfo'>
+        <p>This game is a progressive web app built with love in Portland, OR. If you want to learn more, collaborate or need an app or website built; give me a holla. Or Chek out my portfolio by following the links below.<br> Or hire someone not as good.<br> Whatever ;)</p>
+        <form action="/email" method="POST">
             <label for="name">Name*</label>
             <input name="name" type="text"required>
             <label for="email">Email*</label>
             <input name="email" type="text" required>
             <label for="select">What's Up?*</label>
             <select name="select" required>
-                <option value="volvo">Build Me a Site!</option>
-                <option value="saab">Build Me an App!</option>
-                <option value="opel">I Need a Redesign!</option>
-                <option value="audi">Hi Buddy!</option>
+                <option value="Build Me a Site!">Build Me a Site!</option>
+                <option value="Build Me an App!">Build Me an App!</option>
+                <option value="I Need a Redesign!">I Need a Redesign!</option>
+                <option value="Hi Buddy!">Hi Buddy!</option>
             </select>
             <input type="reset">
             <input type="submit">
         </form>
         <span><a href="https://joshboyan.com">&copy;JoshBoyan2017&ndash;All Rights Reserved</a></span>
-    </aside>-->
+    </aside>-

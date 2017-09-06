@@ -31,7 +31,8 @@ this.addEventListener('install', function(event) {
 });
 
 this.addEventListener('fetch', function(event) {
-  if(event.request.url.indexOf('api/scores') === -1){
+  // Ignore API requests and email routes
+  if(event.request.url.indexOf('api/scores') === -1 && event.request.url.indexOf('/email') === -1){
   event.respondWith(
     caches.match(event.request)      
   );}
