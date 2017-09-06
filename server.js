@@ -1,4 +1,5 @@
 // Set up express instance
+var config = require('./config.js');
 var express = require('express');
 var path = require('path');
 var app = express();
@@ -13,20 +14,16 @@ app.use(bodyParser.json());
 // Get a router instance
 var router = express.Router();
 
-//Set up port variable
-var port = process.env.PORT || 3899;
-
-var dbURI = 'mongodb://josh11:josh11@ds115214.mlab.com:15214/heroku_nfl4r94m';
 // Connect to database with mongoose driver
 var mongoose = require('mongoose');
-mongoose.connect(dbURI, {
+mongoose.connect(config.dbURI, {
   useMongoClient: true,
 });
 
 // CONNECTION EVENTS
 // When successfully connected
 mongoose.connection.on('connected', function () {  
-  console.log('Mongoose default connection open to ' + dbURI);
+  console.log('Mongoose default connection open to ' + config.dbURI);
 }); 
 
 // If the connection throws an error
@@ -62,8 +59,8 @@ router.get('/', function(req,res){
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'boyanjosh@gmail.com',
-    pass: '24045Hss!'
+    user: config.user,
+    pass: config.pass
   }
 });
 
@@ -73,8 +70,8 @@ app.post('/email', function(req, res) {
   res.sendFile(path.join(__dirname + '/builds/dist/index.html'));
   console.log(req.body.select);
     var message = {
-        from: 'boyanjosh@gmail.com',
-        to: 'boyanjosh@gmail.com',
+        from: config.user,
+        to: config.user,
         subject: 'Message from Fifteen Puzzle',
         html: '<p>' + req.body.name + '</p>' +
               '<p>' + req.body.email + '</p>' +
@@ -125,5 +122,5 @@ router.route('/scores')
     })
   });
 
-app.listen(port,
-  console.log("Listening on port " + port));
+app.listen(config.port,
+  console.log("Listening on port " + config.port));

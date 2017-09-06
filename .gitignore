@@ -1,4 +1,5 @@
 .idea/*
+config.js
 builds/dev/css/*
 builds/dev/js/*
 builds/dev/*.html
