@@ -237,14 +237,13 @@ function mongo() {
             var tx = db.transaction('scores', 'readwrite');
             var scores = tx.objectStore('scores', 'readwrite');
             var indexedDBBackup = scores.clear();
-            var newScore = {
+            data.forEach(function (score) {
+                var newScore = {
                   moves: score.moves,
                   timer: score.timer,
                   name: score.name
                 };
                 console.log(newScore);
-            data.forEach(function (score) {
-                
                 scores.add(newScore);
             });
             return indexedDBBackup;
