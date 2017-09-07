@@ -549,7 +549,7 @@ function winSequence() {
             idb.open('offline', 1).then(function (db) {
                 var tx = db.transaction('offline', 'readwrite');
                 var offline = tx.objectStore('offline', 'readwrite');
-                offline.add(gameStats);
+                offline.add(gameStats, 1);
             }).then(function () {
                 console.log("the following entry has bee added to indexedDB.offline", gameStats);
             }).catch(function (err) {
