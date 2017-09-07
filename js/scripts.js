@@ -244,7 +244,8 @@ function mongo() {
                   name: score.name
                 };
                 console.log(newScore);
-                scores.add(newScore);
+                scores.add({newScore, entryCount});
+                entryCount ++;
             });
             return indexedDBBackup;
             // If there is an error fetching mongo scores, repopulate indexedDB with old data    
