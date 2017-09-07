@@ -238,7 +238,7 @@ function mongo() {
             var scores = tx.objectStore('scores', 'readwrite');
             var indexedDBBackup = scores.clear();
             data.forEach(function (score) {
-                scores.add(score);
+                scores.add(score, entryCount);
                 entryCount ++;
             });
             return indexedDBBackup;
