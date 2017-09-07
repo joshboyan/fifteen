@@ -52,7 +52,8 @@ function winSequence() {
     // while the user is offline
     let tx = db.transaction('scores', 'readwrite');
     let scores = tx.objectStore('scores', 'readwrite');
-    scores.add(gameStats);    
+    scores.add(gameStats, scoresKey);
+    scoresKey++;    
     }).then(() =>{
         console.log("The following entry has been made to indexedDB: ", gameStats);
         if(window.navigator.onLine){
@@ -69,7 +70,8 @@ function winSequence() {
             idb.open('offline', 1).then(db => {
                 let tx = db.transaction('offline', 'readwrite');
                 let offline = tx.objectStore('offline', 'readwrite');
-                offline.add(gameStats);
+                offline.add(gameStats, offlineKey);
+                offlineKey++;
             }).then(() => {
                 console.log("the following entry has bee added to indexedDB.offline", gameStats)
             }).catch(err => {console.error(err)});

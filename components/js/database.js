@@ -7,7 +7,7 @@ function indexedDB(){
   // Open an indexedDB database
   var dbPromise = idb.open('scores', 1, upgradeDB => {
       // Create object store in the database
-      let scores = upgradeDB.createObjectStore('scores', { autoIncrement : true });
+      let scores = upgradeDB.createObjectStore('scores');
       // Create keys to query database
       scores.createIndex('timer', 'timer');
       scores.createIndex('moves', 'moves');
@@ -17,7 +17,7 @@ function indexedDB(){
 
   var dbPromiseOffline = idb.open('offline', 1, upgradeDB => {
       // Create object store in the database
-      let offline = upgradeDB.createObjectStore('offline', { autoIncrement : true });
+      let offline = upgradeDB.createObjectStore('offline');
   }).then(db => {
           // Create a transaction
           let tx = db.transaction('offline');
@@ -75,13 +75,15 @@ function mongo(){
             scores = tx.objectStore('scores', 'readwrite');
             let indexedDBBackup = scores.clear();
             data.forEach(score => {
-                scores.add(score);
+                scores.add(score, scoresKey);
+                scoresKey++;
             });
             return indexedDBBackup;
         // If there is an error fetching mongo scores, repopulate indexedDB with old data    
         }).catch(indexedDBBackup => {
             indexedDBBackup.forEach(elem => {
-                scores.add(elem);
+                scores.add(elem, scoresKey);
+                scoresKey++;
             });
             console.log('Repopulating indexedDB with scores');
         });        
