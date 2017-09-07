@@ -6,7 +6,6 @@ var app = express();
 var bodyParser = require('body-parser');
 var nodemailer = require('nodemailer');
 
-
 // configure app to use bodyParser() to get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
