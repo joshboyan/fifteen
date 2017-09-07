@@ -126,16 +126,6 @@ gulp.task('paniniDist', function() {
         .pipe(gulp.dest('./builds/dist'));
 });
 
-gulp.task('sitemap', function() {
-    return gulp.src('./builds/dist/**/*.html', {
-            read: false
-        })
-        .pipe(sitemap({
-            siteUrl: 'https://joshboyan.com/fifteen/'
-        }))
-        .pipe(gulp.dest('./builds/dist'));
-});
-
 gulp.task('watch', function(done) {
     gulp.watch(['./server.js']).on('change', browserSync.reload);
     gulp.watch(jsSources, ['js']).on('change', browserSync.reload);

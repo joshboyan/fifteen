@@ -48,7 +48,7 @@ process.on('SIGINT', function() {
 var Score = require('./models/score.js');
 
 // Give UI access to statics assets
-app.use(express.static(path.join(__dirname + '/builds/dist/')));
+app.use(express.static(path.join(__dirname + '/builds/dev/')));
 
 // Serve UI from server
 router.get('/', function(req,res){
