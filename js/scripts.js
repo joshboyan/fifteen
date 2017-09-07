@@ -235,10 +235,15 @@ function mongo() {
         // Clear mongo and add all the data from mongo
         idb.open('scores', 1).then(function (db) {
             var tx = db.transaction('scores', 'readwrite');
-            scores = tx.objectStore('scores', 'readwrite');
-            var indexedDBBackup;
+            var scores = tx.objectStore('scores', 'readwrite');
+            var indexedDBBackup = scores.clear();
             data.forEach(function (score) {
-                scores.add(score);
+                var newScore = {
+                  moves: score.moves,
+                  timer: score.timer,
+                  name: score.name
+                }
+                scores.add(newScore);
             });
             return indexedDBBackup;
             // If there is an error fetching mongo scores, repopulate indexedDB with old data    
