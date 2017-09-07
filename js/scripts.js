@@ -236,7 +236,7 @@ function mongo() {
         idb.open('scores', 1).then(function (db) {
             var tx = db.transaction('scores', 'readwrite');
             scores = tx.objectStore('scores', 'readwrite');
-            var indexedDBBackup = scores.clear();
+            var indexedDBBackup;
             data.forEach(function (score) {
                 scores.add(score);
             });
