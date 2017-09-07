@@ -67,7 +67,7 @@ var transporter = nodemailer.createTransport({
 // Set up email route 
 app.post('/email', function(req, res) {
   
-  res.sendFile(path.join(__dirname + '/builds/dist/index.html'));
+  res.sendFile(path.join(__dirname + '/index.html'));
   console.log(req.body.select);
     var message = {
         from: config.user,
