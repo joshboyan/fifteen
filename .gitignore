@@ -8,3 +8,11 @@ builds/dist/sitemap.xml
 node_modules
 .tmp
 .sass-cache
+config.js
+index.html
+manifest.json
+robots.txt
+sw.js
+css/
+js/
+img/
