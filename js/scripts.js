@@ -170,7 +170,7 @@ function indexedDB() {
     // Open an indexedDB database
     var dbPromise = idb.open('scores', 1, function (upgradeDB) {
         // Create object store in the database
-        var scores = upgradeDB.createObjectStore('scores', { autoIncrement: true });
+        var scores = upgradeDB.createObjectStore('scores');
         // Create keys to query database
         scores.createIndex('timer', 'timer');
         scores.createIndex('moves', 'moves');
@@ -180,7 +180,7 @@ function indexedDB() {
 
     var dbPromiseOffline = idb.open('offline', 1, function (upgradeDB) {
         // Create object store in the database
-        var offline = upgradeDB.createObjectStore('offline', { autoIncrement: true });
+        var offline = upgradeDB.createObjectStore('offline');
     }).then(function (db) {
         // Create a transaction
         var tx = db.transaction('offline');
