@@ -31,7 +31,7 @@ gulp.task('browser-sync', function() {
     });
 });
 
-gulp.task('js', function() {
+gulp.task('jsDist', function() {
     return gulp.src(jsSources)
         .pipe(babel({
             presets: ['es2015']
@@ -44,10 +44,10 @@ gulp.task('js', function() {
             insertGlobals: true
         }))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('./builds/dev/js'))
+        .pipe(gulp.dest('./builds/dist/js'))
 });
 
-gulp.task('jsDist', function() {
+/*gulp.task('jsDist', function() {
     return gulp.src(jsSources)
         .pipe(babel({
             presets: ['es2015']
@@ -58,7 +58,7 @@ gulp.task('jsDist', function() {
         }))
         .pipe(uglify())
         .pipe(gulp.dest('builds/dist/js'))
-});
+});*/
 
 gulp.task('sass', function() {
     return gulp.src(sassSources)
