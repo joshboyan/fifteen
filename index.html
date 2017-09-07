@@ -10,7 +10,7 @@
 	<meta property="og:title" content=Fifteen Puzzle />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content=https://fifteen-puzzle.herokuapp.com/ />
-	<meta property="og:image" content=https://fifteen-puzzle.herokuapp.com/./builds/dist/img/finished.png />
+	<meta property="og:image" content=https://fifteen-puzzle.herokuapp.com/img/finished.png />
 	<meta property="og:description" content=Classic number sorting puzzle game. />
 	<title>Fifteen Puzzle</title>
 
@@ -27,7 +27,7 @@
 <header role="banner">
     <span id="instructionsTrigger">Fifteen</span>
     <span>puzzle</span>
-    <img id="refresh" src="./builds/dist/img/refresh.png" alt="Refresh game">
+    <img id="refresh" src="img/refresh.png" alt="Refresh game">
 </header>
 <main role="main">
     <div class="wrapper">
@@ -39,20 +39,20 @@
     </div>
 </main>
 <footer role="navigation">
-    <img id="timeScores" src="./builds/dist/img/time.png" alt="View Best Time Leaderboard">
+    <img id="timeScores" src="img/time.png" alt="View Best Time Leaderboard">
     
-        <img id="info" src="./builds/dist/img/info.png" alt="Info">
+        <img id="info" src="img/info.png" alt="Info">
     
-    <img id="moveScores" src="./builds/dist/img/trophy.png" alt="Best Least Move Leaderboard">
+    <img id="moveScores" src="img/trophy.png" alt="Best Least Move Leaderboard">
 </footer>
 <aside id="instructions" class="instructions" role="complementary">
     <p>Arrange game pieces into ascending order.</p>
     <figure>
-        <img src="./builds/dist/img/starting.png" alt="Starting Game Board">
+        <img src="img/starting.png" alt="Starting Game Board">
         <figcation>Starting Game Board</figcation>
     </figure>
     <figure>
-        <img src="./builds/dist/img/finished.png" alt="Finished Game Board">
+        <img src="img/finished.png" alt="Finished Game Board">
         <figcation>Finished Game Board</figcation>
     </figure>
     <button id="closeInstructions">Got It!!</button>
@@ -69,19 +69,19 @@
     </form>
     </aside>
     <aside id="timeScoreBoard" class="time-score-board" role="complementary">
-    <img src="./builds/dist/img/x-mark.png" alt="exit button" id='exitTimes'>
-        <img src="./builds/dist/img/x-mark.png" alt="exit button" id='exitTimesWin'>
+    <img src="img/x-mark.png" alt="exit button" id='exitTimes'>
+        <img src="img/x-mark.png" alt="exit button" id='exitTimesWin'>
         <h2>Fastest Times</h2>
         <div id="timeEntries"></div>
     </aside>
     <aside id="movesScoreBoard" class="moves-score-board" role="complementary">
-    <img src="./builds/dist/img/x-mark.png" alt="exit button" id='exitMoves'>
-        <img src="./builds/dist/img/x-mark.png" alt="exit button" id='exitMovesWin'>
+    <img src="img/x-mark.png" alt="exit button" id='exitMoves'>
+        <img src="img/x-mark.png" alt="exit button" id='exitMovesWin'>
         <h2>Least Moves</h2>
         <div id="moveEntries"></div>
     </aside>
     <aside id="infoBoard" class="info" role="complementary">
-        <img src="./builds/dist/img/x-mark.png" alt="exit button" id='exitInfo'>
+        <img src="img/x-mark.png" alt="exit button" id='exitInfo'>
         <p>This game is a progressive web app built with love in Portland, OR. If you want to learn more, collaborate or need an app or website built; give me a holla. Or Chek out my portfolio by following the links below.<br> Or hire someone not as good.<br> Whatever ;)</p>
         <form action="/email" method="POST">
             <label for="name">Name*</label>
