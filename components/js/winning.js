@@ -3,6 +3,7 @@
 * execute the win sequence if met
 */
 
+
 function winCheck() {
     // Get the initial count from the DB
     if (winCount === 0) {
