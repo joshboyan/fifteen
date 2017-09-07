@@ -12,7 +12,7 @@ var time;
 var scores;
 var entryCount;
 var scoresKey = 1;
-var offlineKey =1;
+var offlineKey = 1;
 
 /*/ Hide URL paramenter if user hits enter after inputting initials
 if(typeof window.history.pushState == 'function') {
