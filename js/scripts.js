@@ -243,6 +243,7 @@ function mongo() {
                   timer: score.timer,
                   name: score.name
                 }
+                console.log(newScore);
                 scores.add(newScore);
             });
             return indexedDBBackup;
