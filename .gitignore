@@ -8,9 +8,10 @@ builds/dist/sitemap.xml
 node_modules
 .tmp
 .sass-cache
-config.js
+server/config.js
 index.html
 manifest.json
+package-lock.json
 robots.txt
 sw.js
 css/

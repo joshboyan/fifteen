@@ -47,11 +47,11 @@ process.on('SIGINT', function() {
 var Score = require('./models/score.js');
 
 // Give UI access to statics assets
-app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, '../')));
 
 // Serve UI from server
-router.get('/', function(req,res){
-  res.sendFile(path.join(__dirname + '/index.html'));
+router.get('/', function(req, res){
+  res.sendFile(path.join(__dirname, '..' , '/index.html'));
 });
 
 // Set up email transporter instance
