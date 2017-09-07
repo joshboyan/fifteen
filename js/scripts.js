@@ -237,9 +237,10 @@ function mongo() {
             var tx = db.transaction('scores', 'readwrite');
             var scores = tx.objectStore('scores', 'readwrite');
             var indexedDBBackup = scores.clear();
+            var newKey = 1;
             data.forEach(function (score) {
-                scores.add(score, entryCount);
-                entryCount ++;
+                scores.add(score, newKey);
+                newKey++;
             });
             return indexedDBBackup;
             // If there is an error fetching mongo scores, repopulate indexedDB with old data    
