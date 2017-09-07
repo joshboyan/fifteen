@@ -123,3 +123,5 @@ router.route('/scores')
 
 app.listen(config.port,
   console.log("Listening on port " + config.port));
+
+module.exports = app;
