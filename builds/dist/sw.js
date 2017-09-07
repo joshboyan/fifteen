@@ -14,15 +14,13 @@ this.addEventListener('install', function(event) {
         '/img/starting.png',
         '/img/time.png',
         '/img/trophy.png',
-        '/img/x-mark.png',/*,
+        '/img/x-mark.png',
         '/img/apple-touch-logo.png',
-        '/img/bell.png',
         '/img/chrome-touch-icon-192x192.png',
         '/img/favicon.png',
         '/img/icon-128x128.png',
         '/img/large-icon-252x252.png',
-        '/img/logo.png',
-        '/img/ms-touch-icon-144x144.png',*/
+        '/img/ms-touch-icon-144x144.png',
       ]);
     }).catch(function(){
       console.warn('Some assets may not have been cached');
