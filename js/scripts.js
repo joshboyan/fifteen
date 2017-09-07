@@ -250,10 +250,12 @@ function mongo() {
             return indexedDBBackup;
             // If there is an error fetching mongo scores, repopulate indexedDB with old data    
         }).catch(function (indexedDBBackup) {
+          if(indexedDBBackup) {
             indexedDBBackup.forEach(function (elem) {
                 scores.add(elem);
             });
             console.log('Repopulating indexedDB with scores');
+          }
         });
     }).catch(function (err) {
         console.error("There was a problem communicating with the database", err);
