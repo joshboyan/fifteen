@@ -237,10 +237,9 @@ function mongo() {
             var tx = db.transaction('scores', 'readwrite');
             var scores = tx.objectStore('scores', 'readwrite');
             var indexedDBBackup = scores.clear();
-            var newKey = 1;
             data.forEach(function (score) {
-                scores.add(score, newKey);
-                newKey++;
+                scores.add(score, scoreKey);
+                scoreKey++;
             });
             return indexedDBBackup;
             // If there is an error fetching mongo scores, repopulate indexedDB with old data    
@@ -365,6 +364,8 @@ var name;
 var time;
 var scores;
 var entryCount;
+var scoreKey = 1;
+var offlineKey = 1;
 
 /*/ Hide URL paramenter if user hits enter after inputting initials
 if(typeof window.history.pushState == 'function') {
@@ -530,7 +531,8 @@ function winSequence() {
         // while the user is offline
         var tx = db.transaction('scores', 'readwrite');
         var scores = tx.objectStore('scores', 'readwrite');
-        scores.add(gameStats);
+        scores.add(gameStats, scoreKey);
+        scoreKey++;
     }).then(function () {
         console.log("The following entry has been made to indexedDB: ", gameStats);
         if (window.navigator.onLine) {
@@ -549,7 +551,8 @@ function winSequence() {
             idb.open('offline', 1).then(function (db) {
                 var tx = db.transaction('offline', 'readwrite');
                 var offline = tx.objectStore('offline', 'readwrite');
-                offline.add(gameStats, 1);
+                offline.add(gameStats, offlineKey);
+                offlineKey++;
             }).then(function () {
                 console.log("the following entry has bee added to indexedDB.offline", gameStats);
             }).catch(function (err) {
