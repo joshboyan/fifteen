@@ -136,4 +136,4 @@ gulp.task('watch', function(done) {
 
 gulp.task('default', ['js', 'sass', 'panini', 'browser-sync', 'imgmin', 'startServer', 'watch']);
 
-gulp.task('dist', ['sassDist', 'jsDist', 'paniniDist', 'imgminDist', 'sitemap']);
+gulp.task('dist', ['sassDist', 'jsDist', 'paniniDist', 'imgminDist']);
