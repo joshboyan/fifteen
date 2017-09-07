@@ -15,7 +15,7 @@ this.addEventListener('install', function(event) {
         '/img/time.png',
         '/img/trophy.png',
         '/img/x-mark.png',
-        '/img/apple-touch-logo.png',
+        '/img/apple-touch-icon.png',
         '/img/chrome-touch-icon-192x192.png',
         '/img/favicon.png',
         '/img/icon-128x128.png',
